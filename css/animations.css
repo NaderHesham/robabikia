@@ -1,0 +1,258 @@
+/* -------------------------------------------------------------
+ * ANIMATIONS.CSS — Micro-interactions, Transitions & Keyframes
+ * ------------------------------------------------------------- */
+
+/* Film Grain Texture Overlay */
+.grain-overlay {
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  width: 200%;
+  height: 200%;
+  background: transparent url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.04"/%3E%3C/svg%3E') repeat;
+  opacity: 0.85;
+  pointer-events: none;
+  z-index: 9999;
+  animation: grain-animation 8s steps(10) infinite;
+}
+
+@keyframes grain-animation {
+  0%, 100% { transform:translate(0, 0); }
+  10% { transform:translate(-5%, -10%); }
+  20% { transform:translate(-15%, 5%); }
+  30% { transform:translate(7%, -25%); }
+  40% { transform:translate(-5%, 25%); }
+  50% { transform:translate(-15%, 10%); }
+  60% { transform:translate(15%, 0%); }
+  70% { transform:translate(0%, 15%); }
+  80% { transform:translate(3%, 35%); }
+  90% { transform:translate(-10%, 10%); }
+}
+
+/* Base Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-45px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(45px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGold {
+  0% {
+    box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(201, 168, 76, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(201, 168, 76, 0);
+  }
+}
+
+@keyframes pulseBurgundy {
+  0% {
+    box-shadow: 0 0 0 0 rgba(123, 45, 62, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(123, 45, 62, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(123, 45, 62, 0);
+  }
+}
+
+@keyframes vibrate {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes floatIndicator {
+  0%, 100% {
+    transform: translateY(0) translateX(-50%);
+  }
+  50% {
+    transform: translateY(10px) translateX(-50%);
+  }
+}
+
+/* Animations Classes */
+.animate-fade-up {
+  animation: fadeInUp 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.animate-pulse-gold {
+  animation: pulseGold 2s infinite;
+}
+
+.animate-pulse-burgundy {
+  animation: pulseBurgundy 2s infinite;
+}
+
+.hover-vibrate:hover {
+  animation: vibrate 0.3s linear infinite;
+}
+
+/* Custom SVG Smoke Reveal Styles */
+.smoke-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ==========================================
+   INTRO CURTAIN STYLES
+   ========================================== */
+.intro-curtain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.curtain-half {
+  position: absolute;
+  top: 0;
+  width: 50.5%; /* slight overlap to prevent gaps */
+  height: 100%;
+  background-color: var(--bg-dark);
+  z-index: 1;
+}
+
+.curtain-left {
+  left: 0;
+  border-right: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.curtain-right {
+  right: 0;
+  border-left: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+.intro-content {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  padding: 2rem;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.intro-logo-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.intro-logo-ornament {
+  font-size: 2rem;
+  color: var(--gold);
+  opacity: 0;
+  margin: 0.5rem 0;
+}
+
+.intro-logo-ar {
+  font-family: var(--font-arabic);
+  font-size: 4.5rem;
+  color: var(--gold);
+  letter-spacing: 2px;
+  text-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+  margin: 0;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.intro-logo-en {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--beige);
+  letter-spacing: 8px;
+  margin-top: -5px;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.intro-tagline {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 1.4rem;
+  color: var(--beige-dim);
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.skip-btn {
+  position: fixed;
+  bottom: 40px;
+  left: 40px; /* Left side because page is RTL, bottom-left is classic for skip */
+  z-index: 10000;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--gold);
+  border: 1px solid rgba(201, 168, 76, 0.4);
+  background: rgba(21, 17, 14, 0.5);
+  backdrop-filter: blur(5px);
+  padding: 0.6rem 1.5rem;
+  border-radius: var(--radius-full);
+  transition: var(--transition-smooth);
+  opacity: 0;
+}
+
+.skip-btn:hover {
+  background: var(--gold);
+  color: var(--bg-dark);
+  border-color: var(--gold);
+  box-shadow: var(--shadow-gold);
+}
+
+/* Lock scroll on body during intro */
+body.intro-active {
+  overflow: hidden;
+  height: 100vh;
+}

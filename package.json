@@ -1,0 +1,17 @@
+{
+  "name": "robabikia-perfumes",
+  "version": "1.0.0",
+  "description": "روبابيكيا للعطور - عطور مصرية معاصرة تجمع تراث الماضي وفخامة الحاضر.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y http-server -p 3000"
+  },
+  "keywords": [
+    "perfume",
+    "landing-page",
+    "gsap",
+    "luxury"
+  ],
+  "author": "Robabikia Perfumes",
+  "license": "ISC"
+}

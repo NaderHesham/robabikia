@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="روبابيكيا للعطور - عطور مصرية معاصرة تجمع تراث الماضي وفخامة الحاضر. روائح نايمة في الذاكرة، صحيت في قارورة.">
+  <meta name="keywords" content="عطور, روبابيكيا, عطور مصرية, فل, ياسمين, عود, مسك, نوستالجيا, عطور فاخرة">
+  <meta name="author" content="Robabikia Perfumes">
+  
+  <title>روبابيكيا للعطور 🌸 Robabikia Perfumes — تراث فاخر</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Rakkas&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/products.css">
+  <link rel="stylesheet" href="css/story.css">
+  <link rel="stylesheet" href="css/footer.css">
+</head>
+<body>
+
+  <!-- Film Grain Overlay -->
+  <div class="grain-overlay"></div>
+
+  <!-- Custom Bottle SVG Cursor -->
+  <div class="custom-cursor" id="custom-cursor">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C10.9 2 10 2.9 10 4V6H7C5.9 6 5 6.9 5 8V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V8C19 6.9 18.1 6 17 6H14V4C14 2.9 13.1 2 12 2Z" stroke="#C9A84C" stroke-width="2" stroke-linejoin="round"/>
+      <path d="M5 10H19" stroke="#C9A84C" stroke-width="2"/>
+      <circle cx="12" cy="15" r="2" fill="#C9A84C"/>
+    </svg>
+  </div>
+
+  <!-- ==========================================
+       1. INTRO ANIMATION CURTAIN
+       ========================================== -->
+  <div class="intro-curtain" id="intro-curtain">
+    <!-- Skip Intro Button -->
+    <button class="skip-btn" id="skip-btn">تخطي ←</button>
+
+    <!-- Rising Smoke SVG Canvas -->
+    <svg class="smoke-canvas" id="intro-smoke" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <path id="smoke-path-1" d="M 50 100 Q 40 70 50 40 T 50 0" fill="none" stroke="rgba(201, 168, 76, 0.15)" stroke-width="6" stroke-linecap="round" />
+      <path id="smoke-path-2" d="M 45 100 Q 55 75 45 50 T 45 0" fill="none" stroke="rgba(237, 224, 200, 0.1)" stroke-width="4" stroke-linecap="round" />
+    </svg>
+
+    <div class="intro-content">
+      <div class="intro-logo-wrapper">
+        <span class="intro-logo-ornament">🌿</span>
+        <h1 class="intro-logo-ar">روبابيكيا</h1>
+        <h2 class="intro-logo-en">ROBABIKIA</h2>
+        <span class="intro-logo-ornament">🌿</span>
+      </div>
+      <p class="intro-tagline">"روائح نايمة في الذاكرة، صحيت في قارورة."</p>
+    </div>
+    
+    <div class="curtain-half curtain-left"></div>
+    <div class="curtain-half curtain-right"></div>
+  </div>
+
+  <!-- ==========================================
+       MAIN PAGE WRAPPER
+       ========================================== -->
+  <div class="main-content" id="main-content">
+
+    <!-- ==========================================
+         NAVBAR / HEADER
+         ========================================== -->
+    <header class="navbar" id="navbar">
+      <div class="nav-container">
+        <!-- Logo -->
+        <a href="#home" class="nav-logo">
+          <span class="logo-text-ar">روبابيكيا</span>
+          <span class="logo-text-en">ROBABIKIA</span>
+        </a>
+
+        <!-- Navigation Links -->
+        <nav class="nav-menu" id="nav-menu">
+          <ul>
+            <li><a href="#home" class="nav-link active">الرئيسية</a></li>
+            <li><a href="#scents" class="nav-link">العطور</a></li>
+            <li><a href="#story" class="nav-link">حكايتنا</a></li>
+            <li><a href="#order" class="nav-link">طريقة الطلب</a></li>
+            <li><a href="#gallery" class="nav-link">النوستالجيا</a></li>
+          </ul>
+        </nav>
+
+        <!-- CTA / WhatsApp Quick Contact -->
+        <div class="nav-cta">
+          <a href="https://wa.me/201000000000?text=أهلاً%20روبابيكيا،%20أريد%20الاستفسار%20عن%20العطور" target="_blank" class="nav-whatsapp-btn hover-vibrate">
+            <span>اطلب الآن</span>
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.963C16.63 2.019 14.155 1 11.53 1c-5.448 0-9.873 4.372-9.877 9.802-.001 1.77.472 3.498 1.371 5.042l-.994 3.635 3.731-.967zm12.338-7.79c-.316-.157-1.872-.911-2.16-.1.017-.288-.288-.73-.85-.1.018-.088-.58-.58-.88-.135-.297-.478-.172-.888-.347-.37-.156-.818-.286-.96-.407-.468-.396-.714-.848-.714-1.3l.002-.152c.007-.417.158-.622.308-.77.15-.15.316-.21.417-.306.1-.096.133-.162.2-.3.066-.138.033-.26-.017-.367-.05-.107-.417-1.002-.57-1.37-.15-.36-.3-.314-.418-.32h-.357c-.122 0-.32.046-.488.228-.168.183-.642.618-.642 1.51 0 .89.658 1.75.75 1.87.092.12 1.272 1.91 3.08 2.67.43.18.766.29 1.028.374.433.136.827.117 1.138.07.348-.052 1.872-.752 2.135-1.446.262-.693.262-1.29.183-1.414-.078-.124-.288-.22-.604-.378z"/>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Burger Menu (Mobile) -->
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle Navigation">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ==========================================
+         2. HERO SECTION
+         ========================================== -->
+    <section class="hero-section" id="home">
+      <div class="hero-bg-wrapper">
+        <div class="hero-bg-overlay"></div>
+        <img src="assets/images/hero_bg.png" alt="روبابيكيا عطور شرقية عريقة" class="hero-bg-img">
+      </div>
+      
+      <div class="hero-content">
+        <span class="hero-subtitle">🌿 بيت العطور العتيقة 🌿</span>
+        <h1 class="hero-title">روبـابـيـكـيـا</h1>
+        <p class="hero-tagline">"روائح نايمة في الذاكرة، صحيت في قارورة."</p>
+        <p class="hero-desc">توليفة ساحرة تجمع عبق الحواري المصرية القديمة ونوستالجيا الماضي مع فخامة وجمال الحاضر.</p>
+        
+        <div class="hero-actions">
+          <a href="#scents" class="btn btn-gold btn-glowing">
+            <span>اكتشف مجموعتنا</span>
+            <span class="btn-shine"></span>
+          </a>
+          <a href="#story" class="btn btn-outline">
+            <span>حكايتنا</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Animated Scroll Down Indicator -->
+      <a href="#scents" class="scroll-indicator" aria-label="Scroll Down">
+        <span class="scroll-text">اسحب لأسفل</span>
+        <div class="scroll-arrow">
+          <span></span>
+          <span></span>
+        </div>
+      </a>
+    </section>
+
+    <!-- ==========================================
+         3. FEATURED SCENTS SECTION
+         ========================================== -->
+    <section class="scents-section" id="scents">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-subtitle">إصداراتنا الخاصة</span>
+          <h2 class="section-title">روائح الذاكرة</h2>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="products-grid" id="products-grid">
+          <!-- Dynamically populated by JS/products.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         4. BRAND STORY SECTION
+         ========================================== -->
+    <section class="story-section" id="story">
+      <!-- Background Parallax Image -->
+      <div class="story-bg" id="story-bg-parallax" style="background-image: url('assets/images/story_bg.png');">
+        <div class="story-overlay"></div>
+      </div>
+
+      <div class="story-container">
+        <div class="story-card glass-panel">
+          <span class="story-mini-title">🌿 حكاية قارورة 🌿</span>
+          <h2 class="story-title-ar">من قلب الدرب الأحمر...</h2>
+          <div class="story-divider"></div>
+          
+          <div class="story-text">
+            <p>
+              كلمة <strong>"روبابيكيا"</strong> بتصحّي جوانا دايماً طاقة حنين غريبة. بتفكرنا بصوت البياع وهو بينادي في الشوارع الهادية يوم الجمعة الصبح، بتفكرنا بصندوق قديم مخفي فوق الدولاب، وصور أبيض وأسود فيها ضحكات ناس عاشوا بالحب والجمال البسيط.
+            </p>
+            <p>
+              من هنا لمعت الفكرة: ليه مانجمعش ذكرياتنا دي في قارورة؟ ليه مانحولش نوستالجيا الشوارع القديمة، رائحة الياسمين اللي طالع من الجنينة، وبخور يوم الجمعة، وتوابل وبزارات الحسين... لعطور فخمة ومعاصرة تلمس قلبك من أول رشة؟
+            </p>
+            <p class="story-highlight">
+              "كل عطر في روبابيكيا هو حكاية مصرية أصيلة، مكتوبة بزيوت عطرية فاخرة، ومحفوظة في قوارير صُنعت لتخليد اللحظات."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         5. HOW TO ORDER
+         ========================================== -->
+    <section class="order-section" id="order">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-subtitle">بخطوات بسيطة وسريعة</span>
+          <h2 class="section-title">كيفية اقتناء عطرك</h2>
+          <div class="section-divider"></div>
+        </div>
+
+        <div class="steps-grid">
+          <!-- Step 1 -->
+          <div class="step-card glass-panel">
+            <div class="step-num">1</div>
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 6V12L16 14M12 12H8" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>تصفّح واختَر عطرَك</h3>
+            <p>اقرأ تفاصيل ومكونات كل عطر، واكتشف النوتات العطرية والمود اللي يناسب شخصيتك.</p>
+          </div>
+
+          <!-- Connector -->
+          <div class="step-connector">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-card glass-panel">
+            <div class="step-num">2</div>
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>تواصل معنا وتساب</h3>
+            <p>اضغط على "اطلب الآن" لتفتح محادثة مباشرة معنا، وسيقوم ممثلنا بتأكيد طلبك وتفاصيل الشحن فوراً.</p>
+          </div>
+
+          <!-- Connector -->
+          <div class="step-connector">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-card glass-panel">
+            <div class="step-num">3</div>
+            <div class="step-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 17H14M2 9H22M13 5H17M5 17H5.01M19 17H19.01M3 21H21C22.1046 21 23 20.1046 23 19V5C23 3.89543 22.1046 3 21 3H3C1.89543 3 1 3.89543 1 5V19C1 20.1046 1.89543 21 3 21Z" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>استلم في باب بيتك</h3>
+            <p>نوفر شحن سريع لجميع محافظات مصر. تدفع عند الاستلام بعد معاينة العطر والتأكد من فخامته.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         6. NOSTALGIA MOOD GALLERY (HORIZONTAL DRAG)
+         ========================================== -->
+    <section class="gallery-section" id="gallery">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-subtitle">شريط الذاكرة</span>
+          <h2 class="section-title">أجواء روبابيكيا</h2>
+          <p class="section-desc">اسحب الشريط أفقياً لاستكشاف أجواء وعوالم عطورنا</p>
+          <div class="section-divider"></div>
+        </div>
+      </div>
+
+      <div class="gallery-wrapper" id="gallery-wrapper">
+        <div class="gallery-track" id="gallery-track">
+          <!-- Slide 1 -->
+          <div class="gallery-item" data-scent="ذاكرة الفل">
+            <img src="assets/images/product_jasmine.png" alt="ذاكرة الفل">
+            <div class="gallery-item-overlay">
+              <h3>ذاكرة الفل</h3>
+              <p>رقة ياسمين بيوت القاهرة</p>
+            </div>
+          </div>
+          <!-- Slide 2 -->
+          <div class="gallery-item" data-scent="سر العود">
+            <img src="assets/images/product_oud.png" alt="سر العود">
+            <div class="gallery-item-overlay">
+              <h3>سر العود</h3>
+              <p>بخور الحسين المعتق</p>
+            </div>
+          </div>
+          <!-- Slide 3 -->
+          <div class="gallery-item" data-scent="عبير النوستالجيا">
+            <img src="assets/images/product_nostalgia.png" alt="عبير النوستالجيا">
+            <div class="gallery-item-overlay">
+              <h3>عبير النوستالجيا</h3>
+              <p>ورد أحمر مخملي دافئ</p>
+            </div>
+          </div>
+          <!-- Slide 4 -->
+          <div class="gallery-item" data-scent="حكايتنا">
+            <img src="assets/images/story_bg.png" alt="أجواء مصرية">
+            <div class="gallery-item-overlay">
+              <h3>شوارع المحروسة</h3>
+              <p>أسرار الماضي الجميل</p>
+            </div>
+          </div>
+          <!-- Slide 5 -->
+          <div class="gallery-item" data-scent="ذاكرة الفل">
+            <img src="assets/images/hero_bg.png" alt="روبابيكيا">
+            <div class="gallery-item-overlay">
+              <h3>فن العطور العتيقة</h3>
+              <p>أصالة التراث في قارورة فخمة</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================
+         7. FOOTER / CONTACT SECTION
+         ========================================== -->
+    <footer class="footer-section">
+      <div class="footer-container">
+        <!-- Logo & Tagline -->
+        <div class="footer-about">
+          <span class="footer-logo">روبابيكيا</span>
+          <p class="footer-tagline">"روائح نايمة في الذاكرة، صحيت في قارورة."</p>
+          <div class="footer-decor">🏺 🌿 🏺</div>
+        </div>
+
+        <!-- Order / CTA Callout -->
+        <div class="footer-cta-card glass-panel animate-pulse-gold">
+          <h3>هل وجدت عطرك الفريد؟</h3>
+          <p>تواصل معنا فوراً على الواتساب واطلب زجاجتك الخاصة بخصم 15% للإصدارات الأولى!</p>
+          <a href="https://wa.me/201000000000?text=أهلاً%20روبابيكيا،%20أريد%20طلب%20عطر%20من%20مجموعتكم" target="_blank" class="footer-whatsapp-btn hover-vibrate">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.963C16.63 2.019 14.155 1 11.53 1c-5.448 0-9.873 4.372-9.877 9.802-.001 1.77.472 3.498 1.371 5.042l-.994 3.635 3.731-.967zm12.338-7.79c-.316-.157-1.872-.911-2.16-.1.017-.288-.288-.73-.85-.1.018-.088-.58-.58-.88-.135-.297-.478-.172-.888-.347-.37-.156-.818-.286-.96-.407-.468-.396-.714-.848-.714-1.3l.002-.152c.007-.417.158-.622.308-.77.15-.15.316-.21.417-.306.1-.096.133-.162.2-.3.066-.138.033-.26-.017-.367-.05-.107-.417-1.002-.57-1.37-.15-.36-.3-.314-.418-.32h-.357c-.122 0-.32.046-.488.228-.168.183-.642.618-.642 1.51 0 .89.658 1.75.75 1.87.092.12 1.272 1.91 3.08 2.67.43.18.766.29 1.028.374.433.136.827.117 1.138.07.348-.052 1.872-.752 2.135-1.446.262-.693.262-1.29.183-1.414-.078-.124-.288-.22-.604-.378z"/>
+            </svg>
+            <span>ابعت طلبك على الواتساب</span>
+          </a>
+        </div>
+
+        <!-- Essential Info -->
+        <div class="footer-info">
+          <div class="info-group">
+            <h4>📍 المقر الرئيسي</h4>
+            <p>القاهرة، جمهورية مصر العربية</p>
+          </div>
+          <div class="info-group">
+            <h4>🚚 خدمات التوصيل</h4>
+            <p>شحن آمن وسريع لكل محافظات مصر</p>
+          </div>
+          <div class="info-group">
+            <h4>✉️ البريد الإلكتروني</h4>
+            <p>hello@robabikia.com</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Copyright & Social Links -->
+      <div class="footer-bottom">
+        <div class="footer-bottom-container">
+          <p class="copyright">روبابيكيا للعطور © 2026. جميع الحقوق محفوظة.</p>
+          <div class="social-links">
+            <a href="https://instagram.com" target="_blank" aria-label="Instagram">Instagram</a>
+            <a href="https://facebook.com" target="_blank" aria-label="Facebook">Facebook</a>
+            <a href="https://tiktok.com" target="_blank" aria-label="TikTok">TikTok</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div> <!-- /main-content -->
+
+  <!-- ==========================================
+       8. PRODUCT DETAILS GLASS MODAL
+       ========================================== -->
+  <div class="product-modal-overlay" id="product-modal">
+    <div class="product-modal glass-panel">
+      <!-- Close Button -->
+      <button class="modal-close-btn" id="modal-close" aria-label="إغلاق النافذة">✕</button>
+
+      <div class="modal-body-grid">
+        <!-- Image Area -->
+        <div class="modal-img-container">
+          <img src="" id="modal-perfume-img" alt="صورة العطر">
+          <div class="modal-glow-bg" id="modal-glow-bg"></div>
+        </div>
+
+        <!-- Info Content Area -->
+        <div class="modal-info-content">
+          <span class="modal-collection" id="modal-perfume-collection">المجموعة الفاخرة</span>
+          <h2 class="modal-name" id="modal-perfume-name">اسم العطر</h2>
+          <div class="modal-price" id="modal-perfume-price">السعر</div>
+          
+          <div class="modal-section-divider"></div>
+          
+          <p class="modal-description" id="modal-perfume-desc">وصف كامل للعطر...</p>
+          
+          <div class="notes-container">
+            <div class="note-box">
+              <span class="note-title">🌸 النوتات العليا</span>
+              <p class="note-val" id="modal-perfume-top">فل، ياسمين</p>
+            </div>
+            <div class="note-box">
+              <span class="note-title">🪵 النوتات الأساسية</span>
+              <p class="note-val" id="modal-perfume-base">مسك، عود معتق</p>
+            </div>
+          </div>
+
+          <div class="modal-mood-badge">
+            <span>المود العام:</span>
+            <strong id="modal-perfume-mood">رومانسية دافئة</strong>
+          </div>
+
+          <a href="" id="modal-whatsapp-link" target="_blank" class="btn btn-gold modal-order-btn hover-vibrate">
+            <span>اطلب هذا العطر الآن</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.963C16.63 2.019 14.155 1 11.53 1c-5.448 0-9.873 4.372-9.877 9.802-.001 1.77.472 3.498 1.371 5.042l-.994 3.635 3.731-.967zm12.338-7.79c-.316-.157-1.872-.911-2.16-.1.017-.288-.288-.73-.85-.1.018-.088-.58-.58-.88-.135-.297-.478-.172-.888-.347-.37-.156-.818-.286-.96-.407-.468-.396-.714-.848-.714-1.3l.002-.152c.007-.417.158-.622.308-.77.15-.15.316-.21.417-.306.1-.096.133-.162.2-.3.066-.138.033-.26-.017-.367-.05-.107-.417-1.002-.57-1.37-.15-.36-.3-.314-.418-.32h-.357c-.122 0-.32.046-.488.228-.168.183-.642.618-.642 1.51 0 .89.658 1.75.75 1.87.092.12 1.272 1.91 3.08 2.67.43.18.766.29 1.028.374.433.136.827.117 1.138.07.348-.052 1.872-.752 2.135-1.446.262-.693.262-1.29.183-1.414-.078-.124-.288-.22-.604-.378z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================
+       JAVASCRIPT SCRIPTS & LIBRARIES
+       ========================================== -->
+  <!-- GSAP Library & ScrollTrigger Plugin -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  
+  <!-- Modular Scripts -->
+  <script src="js/intro.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/scroll.js"></script>
+  <script src="js/gallery.js"></script>
+</body>
+</html>
