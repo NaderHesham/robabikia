@@ -125,14 +125,70 @@
 }
 
 /* Custom SVG Smoke Reveal Styles */
-.smoke-canvas {
+.curtain-smoke-canvas {
   position: absolute;
   top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 10;
+  z-index: 2;
+}
+
+.curtain-left .curtain-smoke-canvas {
+  right: 0;
+}
+
+.curtain-right .curtain-smoke-canvas {
+  left: 0;
+}
+
+#smoke-path-left-1, #smoke-path-left-2, #smoke-path-right-1, #smoke-path-right-2 {
+  transform-origin: bottom center;
+}
+
+/* Symmetrical sways */
+#smoke-path-left-1 {
+  animation: smokeSwayLeft 9s ease-in-out infinite alternate;
+}
+#smoke-path-left-2 {
+  animation: smokeSwayLeft 11s ease-in-out infinite alternate -3s;
+}
+
+#smoke-path-right-1 {
+  animation: smokeSwayRight 9s ease-in-out infinite alternate;
+}
+#smoke-path-right-2 {
+  animation: smokeSwayRight 11s ease-in-out infinite alternate -3s;
+}
+
+@keyframes smokeSwayLeft {
+  0% {
+    transform: rotate(-1.2deg) scaleX(0.95);
+    opacity: 0.2;
+  }
+  50% {
+    transform: rotate(1.5deg) scaleX(1.05);
+    opacity: 0.55;
+  }
+  100% {
+    transform: rotate(-1.5deg) scaleX(0.9);
+    opacity: 0.25;
+  }
+}
+
+@keyframes smokeSwayRight {
+  0% {
+    transform: rotate(1.2deg) scaleX(0.95);
+    opacity: 0.2;
+  }
+  50% {
+    transform: rotate(-1.5deg) scaleX(1.05);
+    opacity: 0.55;
+  }
+  100% {
+    transform: rotate(1.5deg) scaleX(0.9);
+    opacity: 0.25;
+  }
 }
 
 /* ==========================================
@@ -149,25 +205,7 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-}
-
-.curtain-half {
-  position: absolute;
-  top: 0;
-  width: 50.5%; /* slight overlap to prevent gaps */
-  height: 100%;
   background-color: var(--bg-dark);
-  z-index: 1;
-}
-
-.curtain-left {
-  left: 0;
-  border-right: 1px solid rgba(201, 168, 76, 0.15);
-}
-
-.curtain-right {
-  right: 0;
-  border-left: 1px solid rgba(201, 168, 76, 0.15);
 }
 
 .intro-content {

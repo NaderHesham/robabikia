@@ -3,10 +3,14 @@
  * ------------------------------------------------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Always start at the very top of the page on reload
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
+
   const body = document.body;
   const curtain = document.getElementById("intro-curtain");
-  const curtainLeft = curtain.querySelector(".curtain-left");
-  const curtainRight = curtain.querySelector(".curtain-right");
   const skipBtn = document.getElementById("skip-btn");
   
   const logoOrnament = curtain.querySelectorAll(".intro-logo-ornament");
@@ -17,51 +21,108 @@ document.addEventListener("DOMContentLoaded", () => {
   // Lock scrolling initially
   body.classList.add("intro-active");
 
-  // Premium Smoke Particle Generator (Faux incense smoke)
-  let smokeInterval;
+  // Premium Sand Particle Generator
+  let sandInterval;
   const startSmoke = () => {
-    smokeInterval = setInterval(() => {
-      createSmokeParticle();
-    }, 120);
+    sandInterval = setInterval(() => {
+      // Generate multiple sand particles per tick for density
+      for(let i=0; i<8; i++) {
+        createSandParticle();
+      }
+    }, 50); // Faster interval for continuous flow
   };
 
   const stopSmoke = () => {
-    clearInterval(smokeInterval);
+    clearInterval(sandInterval);
   };
 
-  const createSmokeParticle = () => {
+  const createSandParticle = () => {
     if (!curtain) return;
     const particle = document.createElement("div");
-    particle.className = "smoke-particle";
+    particle.className = "sand-particle";
     
-    // Randomize dimensions
-    const size = Math.random() * 120 + 80; // 80px to 200px
+    // Randomize dimensions for fine sand
+    const size = Math.random() * 2 + 1; // 1px to 3px
     const startX = Math.random() * window.innerWidth;
+    
+    // Sand colors (mix of gold, beige, and dark brown)
+    const colors = ['#C9A84C', '#EDE0C8', '#8B7355', '#D4AF37'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
     
     // Style particle
     particle.style.cssText = `
       position: absolute;
-      bottom: -150px;
+      bottom: -10px;
       left: ${startX}px;
       width: ${size}px;
       height: ${size}px;
-      background: radial-gradient(circle, rgba(201, 168, 76, 0.18) 0%, rgba(237, 224, 200, 0.05) 40%, rgba(13, 10, 7, 0) 70%);
+      background-color: ${color};
       border-radius: 50%;
-      filter: blur(40px);
       pointer-events: none;
       z-index: 2;
-      opacity: 0;
+      opacity: ${Math.random() * 0.5 + 0.5};
     `;
     
     curtain.appendChild(particle);
 
-    // Animate particle upwards with swaying
+    // Animate sand rising like a wind flurry
     gsap.to(particle, {
-      y: -window.innerHeight - 200,
-      x: `+=${Math.sin(Math.random()) * 150 - 75}`,
-      opacity: Math.random() * 0.5 + 0.3,
-      duration: Math.random() * 4 + 3,
+      y: -window.innerHeight - 50,
+      x: `+=${Math.sin(Math.random() * Math.PI * 2) * 150 - 75}`,
+      duration: Math.random() * 2 + 1.5,
       ease: "power1.out",
+      onComplete: () => {
+        particle.remove();
+      }
+    });
+  };
+
+  // Interactive mouse sway & sand displacement
+  if (curtain) {
+    curtain.addEventListener("mousemove", (e) => {
+      // Create a burst of sand on mouse move
+      for(let i=0; i<3; i++) {
+        createInteractiveSand(e.clientX, e.clientY);
+      }
+    });
+  }
+
+  const createInteractiveSand = (x, y) => {
+    if (!curtain) return;
+    const particle = document.createElement("div");
+    particle.className = "sand-particle interactive";
+    const size = Math.random() * 2.5 + 1; // 1px to 3.5px
+    const colors = ['#C9A84C', '#EDE0C8', '#D4AF37'];
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    
+    // Offset slightly from cursor for spray effect
+    const offsetX = x + (Math.random() * 40 - 20);
+    const offsetY = y + (Math.random() * 40 - 20);
+
+    particle.style.cssText = `
+      position: absolute;
+      top: ${offsetY}px;
+      left: ${offsetX}px;
+      width: ${size}px;
+      height: ${size}px;
+      background-color: ${color};
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 2;
+      opacity: ${Math.random() * 0.8 + 0.2};
+    `;
+    curtain.appendChild(particle);
+
+    // Sand scatters away from cursor and falls down or drifts
+    const scatterX = (offsetX - x) * 3 + (Math.random() * 50 - 25);
+    const scatterY = (Math.random() * 150 + 50); // falls downwards like gravity
+
+    gsap.to(particle, {
+      y: `+=${scatterY}`,
+      x: `+=${scatterX}`,
+      opacity: 0,
+      duration: Math.random() * 1 + 0.5,
+      ease: "power2.out",
       onComplete: () => {
         particle.remove();
       }
@@ -115,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Fade out text overlay inside curtain
+    // Fade out text overlay and background
     transitionTl.to([logoAr, logoEn, tagline, logoOrnament, skipBtn], {
       opacity: 0,
       y: -30,
@@ -124,24 +185,12 @@ document.addEventListener("DOMContentLoaded", () => {
       ease: "power2.in"
     });
 
-    // Split curtain halves
-    transitionTl.to(curtainLeft, {
-      xPercent: -100,
-      duration: 1.8,
-      ease: "power3.inOut"
-    }, 0.5);
-
-    transitionTl.to(curtainRight, {
-      xPercent: 100,
-      duration: 1.8,
-      ease: "power3.inOut"
-    }, 0.5);
-    
-    // Blur out background wrapper of intro
+    // Fade out background wrapper of intro
     transitionTl.to(curtain, {
+      opacity: 0,
       backdropFilter: "blur(0px)",
-      backgroundColor: "rgba(13,10,7,0)",
-      duration: 1.8
+      duration: 1.5,
+      ease: "power2.out"
     }, 0.5);
   };
 

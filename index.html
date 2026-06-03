@@ -44,12 +44,6 @@
     <!-- Skip Intro Button -->
     <button class="skip-btn" id="skip-btn" data-i18n="intro-skip">تخطي ←</button>
 
-    <!-- Rising Smoke SVG Canvas -->
-    <svg class="smoke-canvas" id="intro-smoke" viewBox="0 0 100 100" preserveAspectRatio="none">
-      <path id="smoke-path-1" d="M 50 100 Q 40 70 50 40 T 50 0" fill="none" stroke="rgba(201, 168, 76, 0.15)" stroke-width="6" stroke-linecap="round" />
-      <path id="smoke-path-2" d="M 45 100 Q 55 75 45 50 T 45 0" fill="none" stroke="rgba(237, 224, 200, 0.1)" stroke-width="4" stroke-linecap="round" />
-    </svg>
-
     <div class="intro-content">
       <div class="intro-logo-wrapper">
         <span class="intro-logo-ornament">🌿</span>
@@ -60,8 +54,7 @@
       <p class="intro-tagline" data-i18n="intro-tagline">"روائح نايمة في الذاكرة، صحيت في قارورة."</p>
     </div>
     
-    <div class="curtain-half curtain-left"></div>
-    <div class="curtain-half curtain-right"></div>
+    <div class="intro-smoke-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"></div>
   </div>
 
   <!-- ==========================================
@@ -352,8 +345,14 @@
             <div class="section-divider"></div>
           </div>
           
-          <!-- Perfume Sub-Categories Filters -->
-          <div class="perfume-subfilters" id="perfume-subfilters">
+          <!-- Step 1: Main Gender Categories -->
+          <div class="perfume-gender-filters" id="perfume-gender-filters">
+            <button class="gender-btn" data-gender="men" data-i18n="sub-men">رجالي</button>
+            <button class="gender-btn" data-gender="women" data-i18n="sub-women">نسائي</button>
+          </div>
+
+          <!-- Step 2: Perfume Sub-Categories Filters -->
+          <div class="perfume-subfilters hidden" id="perfume-subfilters">
             <button class="sub-btn active" data-sub="all" data-i18n="sub-all">الكل</button>
             <button class="sub-btn" data-sub="original" data-i18n="sub-original">أصلي</button>
             <button class="sub-btn" data-sub="inspired" data-i18n="sub-inspired">مستوحى</button>
@@ -379,6 +378,13 @@
             <h2 class="section-title" data-i18n="clothes-header-title">الأزياء الفاخرة</h2>
             <div class="section-divider"></div>
           </div>
+          
+          <!-- Step 1: Main Gender Categories -->
+          <div class="perfume-gender-filters" id="clothes-gender-filters">
+            <button class="gender-btn" data-gender="men" data-i18n="sub-men">رجالي</button>
+            <button class="gender-btn" data-gender="women" data-i18n="sub-women">نسائي</button>
+          </div>
+
           <div class="editorial-container" id="clothes-editorial-rows">
             <!-- JS Injected: Alternating rows Zara-style -->
           </div>
@@ -397,6 +403,13 @@
             <h2 class="section-title" data-i18n="shoes-header-title">الأحذية الجلدية</h2>
             <div class="section-divider"></div>
           </div>
+
+          <!-- Step 1: Main Gender Categories -->
+          <div class="perfume-gender-filters" id="shoes-gender-filters">
+            <button class="gender-btn" data-gender="men" data-i18n="sub-men">رجالي</button>
+            <button class="gender-btn" data-gender="women" data-i18n="sub-women">نسائي</button>
+          </div>
+
           <div class="shoes-grid" id="shoes-lookbook-grid">
             <!-- JS Injected: 2-column Lookbook Shoes Cards -->
           </div>

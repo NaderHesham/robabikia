@@ -728,6 +728,36 @@ html[lang="en"] .view-all-link:hover {
   padding: 10rem 0 7rem;
 }
 
+/* Gender Categories Switcher (Step 1) */
+.perfume-gender-filters {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.gender-btn {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--beige-dim);
+  font-family: var(--font-arabic);
+  font-weight: 700;
+  font-size: 1.4rem;
+  padding: 0.8rem 2.5rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.gender-btn:hover,
+.gender-btn.active {
+  background-color: var(--gold);
+  border-color: var(--gold);
+  color: var(--bg-dark);
+  box-shadow: var(--shadow-gold);
+}
+
 /* Fragrance Sub-Categories Switcher */
 .perfume-subfilters {
   display: flex;
@@ -735,6 +765,21 @@ html[lang="en"] .view-all-link:hover {
   gap: 0.8rem;
   margin-bottom: 3.5rem;
   flex-wrap: wrap;
+  opacity: 1;
+  visibility: visible;
+  height: auto;
+  transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease, margin-bottom 0.4s ease, height 0.4s ease;
+  transform: translateY(0);
+}
+
+.perfume-subfilters.hidden {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  margin-bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform: translateY(-10px);
 }
 
 .sub-btn {

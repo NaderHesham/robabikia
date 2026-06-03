@@ -49,6 +49,8 @@ const translations = {
 
     // Sub-Categories under Fragrances
     "sub-all": "الكل",
+    "sub-men": "رجالي",
+    "sub-women": "نسائي",
     "sub-original": "أصلي",
     "sub-inspired": "مستوحى",
     "sub-recreated": "محاكاة",
@@ -177,6 +179,8 @@ const translations = {
 
     // Sub-Categories under Fragrances
     "sub-all": "All",
+    "sub-men": "Men",
+    "sub-women": "Women",
     "sub-original": "Original",
     "sub-inspired": "Inspired",
     "sub-recreated": "Recreated",

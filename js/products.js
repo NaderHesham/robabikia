@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
       id: "jasmine",
       category: "perfumes",
       subCategory: "original",
+      gender: "women",
       ar: {
         name: "ذاكرة الفل",
         collection: "مجموعة الماضي الجميل",
@@ -38,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
       id: "oud",
       category: "perfumes",
       subCategory: "inspired",
+      gender: "unisex",
       ar: {
         name: "سر العود",
         collection: "مجموعة التراث المعتق",
@@ -63,9 +65,68 @@ document.addEventListener("DOMContentLoaded", () => {
       accentColor: "#C9A84C"
     },
     {
+      id: "khedive",
+      category: "perfumes",
+      subCategory: "original",
+      gender: "men",
+      ar: {
+        name: "الخديوي",
+        collection: "مجموعة العظمة والتفرد",
+        shortDesc: "وقار الجلود مع حدة التبغ والقهوة العربية الفاخرة.",
+        desc: "عطر رجالي مهيب يعبر عن الهيبة والوقار، يفتتح بلمسة برغموت دافئة تليها نبضات الجلود والتوابل الحارة، وتستقر قاعدته على سحر التبغ والقهوة والمسك المعتق.",
+        specLeftVal: "برغموت إيطالي، قهوة عربية، هيل",
+        specRightVal: "جلود فاخرة، تبغ خام، خشب الصندل",
+        price: "٥٩٠ جنيه",
+        mood: "رجولي، مهيب، حاد"
+      },
+      en: {
+        name: "The Khedive",
+        collection: "Grandeur & Distinction Collection",
+        shortDesc: "The prestige of leather with the boldness of raw tobacco and fine Arabic coffee.",
+        desc: "A majestic masculine scent expressing authority and stature, opening with warm bergamot and dry cardamom, leading to a heart of leather, settling on raw tobacco, coffee, and aged musk.",
+        specLeftVal: "Italian Bergamot, Arabic Coffee, Cardamom",
+        specRightVal: "Premium Leather, Raw Tobacco, Sandalwood",
+        price: "590 EGP",
+        mood: "Masculine, Majestic, Bold"
+      },
+      image: "assets/images/product_oud.png",
+      accentGlow: "rgba(201, 168, 76, 0.2)",
+      accentColor: "#C9A84C"
+    },
+    {
+      id: "cairo-rose",
+      category: "perfumes",
+      subCategory: "inspired",
+      gender: "women",
+      ar: {
+        name: "وردة القاهرة",
+        collection: "مجموعة رقة المساء",
+        shortDesc: "نعومة الورد الطائفي الممزوج مع المسك الأبيض وخشب الكشمير.",
+        desc: "توليفة رقيقة وجذابة تحتفي بالأنوثة الكلاسيكية والجمال الهادئ. نفحات الورد الطائفي الطبيعي الممتزج مع المسك السكري الفاخر ونعومة خشب الكشمير.",
+        specLeftVal: "ورد طائفي، توت العليق، ياسمين ناعم",
+        specRightVal: "مسك سكري، خشب الكشمير، فانيليا دافئة",
+        price: "٤٨٠ جنيه",
+        mood: "أنثوي، رقيق، جذاب"
+      },
+      en: {
+        name: "Cairo Rose",
+        collection: "Evening Delicacy Collection",
+        shortDesc: "The softness of Taif rose blended with premium white musk and cashmere wood.",
+        desc: "A delicate and attractive blend celebrating classic femininity and serene beauty. Fresh notes of natural Taif rose mixed with luxurious sweet musk and cashmere wood.",
+        specLeftVal: "Taif Rose, Raspberry, Soft Jasmine",
+        specRightVal: "Sweet Musk, Cashmere Wood, Warm Vanilla",
+        price: "480 EGP",
+        mood: "Feminine, Delicate, Attractive"
+      },
+      image: "assets/images/product_nostalgia.png",
+      accentGlow: "rgba(123, 45, 62, 0.25)",
+      accentColor: "#7B2D3E"
+    },
+    {
       id: "nostalgia",
       category: "perfumes",
       subCategory: "recreated",
+      gender: "women",
       ar: {
         name: "عبير النوستالجيا",
         collection: "مجموعة الحنين الفاخرة",
@@ -95,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       id: "linen-shirt",
       category: "clothes",
+      gender: "men",
       sizes: ["S", "M", "L", "XL", "XXL"],
       ar: {
         name: "قميص كتان راقي",
@@ -119,8 +181,36 @@ document.addEventListener("DOMContentLoaded", () => {
       accentColor: "#EDE0C8"
     },
     {
+      id: "linen-dress",
+      category: "clothes",
+      gender: "women",
+      sizes: ["XS", "S", "M", "L", "XL"],
+      ar: {
+        name: "فستان كتان راقي",
+        collection: "مجموعة الصيف الفاخرة",
+        shortDesc: "فستان صيفي رقيق مصنوع من ألياف الكتان الطبيعية لتمنحك الأناقة والانتعاش.",
+        desc: "فستان نسائي صيفي كلاسيكي رقيق مصنوع من خامة الكتان الطبيعي الفاخر بنسبة 100%. تصميم مريح وأنيق يجمع البساطة الراقية ومناسب لإطلالة مسائية مميزة.",
+        specLeftVal: "كتان نقي 100% طبيعي وناعم",
+        specRightVal: "قصة مريحة كلاسيكية، تطريز يدوي على الأكمام والياقة",
+        price: "١٤٠٠ جنيه"
+      },
+      en: {
+        name: "Premium Linen Dress",
+        collection: "Luxury Summer Collection",
+        shortDesc: "Delicate summer dress crafted from premium natural linen for style and freshness.",
+        desc: "A classic-modern summer dress tailored from 100% pure premium natural linen. Features a relaxed yet elegant silhouette for outstanding summer evenings.",
+        specLeftVal: "100% Pure Breathable Natural Linen",
+        specRightVal: "Classic relaxed fit, fine handmade embroidery on sleeves",
+        price: "1,400 EGP"
+      },
+      image: "assets/images/story_bg.png",
+      accentGlow: "rgba(237, 224, 200, 0.15)",
+      accentColor: "#EDE0C8"
+    },
+    {
       id: "tailored-trousers",
       category: "clothes",
+      gender: "men",
       sizes: ["30", "32", "34", "36", "38"],
       ar: {
         name: "بنطال كلاسيكي أنيق",
@@ -149,6 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       id: "minimalist-sneakers",
       category: "shoes",
+      gender: "unisex",
       sizes: ["40", "41", "42", "43", "44", "45"],
       ar: {
         name: "حذاء جلدي عصري",
@@ -173,8 +264,36 @@ document.addEventListener("DOMContentLoaded", () => {
       accentColor: "#7B2D3E"
     },
     {
+      id: "classic-flats",
+      category: "shoes",
+      gender: "women",
+      sizes: ["36", "37", "38", "39", "40", "41"],
+      ar: {
+        name: "حذاء فلات كلاسيكي",
+        collection: "مجموعة الخطوات المريحة",
+        shortDesc: "حذاء نسائي فلات مصنوع يدوياً من الجلد الطبيعي الناعم والمريح.",
+        desc: "حذاء نسائي لوفر/فلات كلاسيكي مصنوع يدوياً بالكامل من أجود أنواع الجلود الطبيعية. تصميم أنيق وبسيط يوفر راحة فائقة ومظهر لائق للاستخدام اليومي الممتد.",
+        specLeftVal: "جلد طبيعي ناعم مدبوغ ومطرز يدوياً",
+        specRightVal: "نعل مطاطي مريح ومرن مع بطانة طبية داخلية مضاعفة",
+        price: "١٢٥٠ جنيه"
+      },
+      en: {
+        name: "Classic Leather Flats",
+        collection: "Comfort Steps Collection",
+        shortDesc: "Handcrafted women's flats made from soft genuine leather for ultimate comfort.",
+        desc: "Artisanal women's flats handcrafted from ultra-soft genuine leather. Stylish minimalist design that ensures cozy support for extended active wear.",
+        specLeftVal: "100% Soft Tanned Hand-stitched Leather",
+        specRightVal: "Flexible rubber outsole, padded orthopedic double-cushioned lining",
+        price: "1,250 EGP"
+      },
+      image: "assets/images/product_jasmine.png",
+      accentGlow: "rgba(237, 224, 200, 0.15)",
+      accentColor: "#EDE0C8"
+    },
+    {
       id: "leather-loafers",
       category: "shoes",
+      gender: "men",
       sizes: ["40", "41", "42", "43", "44", "45"],
       ar: {
         name: "حذاء لوفر كلاسيكي",
@@ -212,6 +331,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Sub-filter DOM reference
   const subFilterWrapper = document.getElementById("perfume-subfilters");
+  const genderFilterWrapper = document.getElementById("perfume-gender-filters");
+  const clothesGenderFilterWrapper = document.getElementById("clothes-gender-filters");
+  const shoesGenderFilterWrapper = document.getElementById("shoes-gender-filters");
 
   // Modal DOM references
   const modal = document.getElementById("product-modal");
@@ -233,7 +355,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const mSizeOptions = document.getElementById("modal-size-options");
 
   let activeLang = localStorage.getItem("robabikia-lang") || "ar";
+  let activeGender = null;
   let activeSubFilter = "all";
+  let activeClothesGender = null;
+  let activeShoesGender = null;
   let activeProductId = null;
   let selectedSize = null;
 
@@ -399,29 +524,44 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 2. Render Full Page Layouts
     if (gridPerfumes) {
-      if (activeSubFilter === "custom") {
-        // Toggle grid columns stylesheet for builder page layout
-        gridPerfumes.classList.add("builder-layout-active");
-        gridPerfumes.innerHTML = getBuilderHTML(lang);
-        
-        // Bind dynamic builder controls listeners
-        bindBuilderListeners();
-        updateBuilderWhatsApp();
-      } else {
+      if (activeGender === null) {
+        if (subFilterWrapper) subFilterWrapper.classList.add("hidden");
         gridPerfumes.classList.remove("builder-layout-active");
-        const filteredPerfumes = activeSubFilter === "all" 
-          ? perfumes 
-          : perfumes.filter(p => p.subCategory === activeSubFilter);
-        gridPerfumes.innerHTML = filteredPerfumes.map(p => getCardHTML(p, lang, discoverText)).join("");
+        gridPerfumes.innerHTML = perfumes.map(p => getCardHTML(p, lang, discoverText)).join("");
+      } else {
+        if (subFilterWrapper) subFilterWrapper.classList.remove("hidden");
+        
+        if (activeSubFilter === "custom") {
+          // Toggle grid columns stylesheet for builder page layout
+          gridPerfumes.classList.add("builder-layout-active");
+          gridPerfumes.innerHTML = getBuilderHTML(lang);
+          
+          // Bind dynamic builder controls listeners
+          bindBuilderListeners();
+          updateBuilderWhatsApp();
+        } else {
+          gridPerfumes.classList.remove("builder-layout-active");
+          const genderPerfumes = perfumes.filter(p => p.gender === activeGender || p.gender === "unisex");
+          const filteredPerfumes = activeSubFilter === "all" 
+            ? genderPerfumes 
+            : genderPerfumes.filter(p => p.subCategory === activeSubFilter);
+          gridPerfumes.innerHTML = filteredPerfumes.map(p => getCardHTML(p, lang, discoverText)).join("");
+        }
       }
     }
     
     if (containerClothes) {
-      containerClothes.innerHTML = clothes.map((c, idx) => getEditorialHTML(c, lang, idx, discoverText)).join("");
+      const filteredClothes = activeClothesGender === null
+        ? clothes
+        : clothes.filter(c => c.gender === activeClothesGender || c.gender === "unisex");
+      containerClothes.innerHTML = filteredClothes.map((c, idx) => getEditorialHTML(c, lang, idx, discoverText)).join("");
     }
     
     if (gridShoes) {
-      gridShoes.innerHTML = shoes.map(s => getLookbookHTML(s, lang, discoverText)).join("");
+      const filteredShoes = activeShoesGender === null
+        ? shoes
+        : shoes.filter(s => s.gender === activeShoesGender || s.gender === "unisex");
+      gridShoes.innerHTML = filteredShoes.map(s => getLookbookHTML(s, lang, discoverText)).join("");
     }
 
     // 3. Render Home Overview Previews (Home View)
@@ -583,6 +723,91 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Bind Fragrances page Gender-filters Switcher delegates
+  if (genderFilterWrapper) {
+    genderFilterWrapper.addEventListener("click", (e) => {
+      const btn = e.target.closest(".gender-btn");
+      if (btn) {
+        const targetGender = btn.getAttribute("data-gender");
+        const buttons = genderFilterWrapper.querySelectorAll(".gender-btn");
+        
+        if (activeGender === targetGender) {
+          // Toggle off
+          btn.classList.remove("active");
+          activeGender = null;
+          
+          // Reset sub-filter to "all" when turning off gender filter
+          activeSubFilter = "all";
+          if (subFilterWrapper) {
+            const subBtns = subFilterWrapper.querySelectorAll(".sub-btn");
+            subBtns.forEach(sb => {
+              if (sb.getAttribute("data-sub") === "all") {
+                sb.classList.add("active");
+              } else {
+                sb.classList.remove("active");
+              }
+            });
+          }
+        } else {
+          // Select new gender
+          buttons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeGender = targetGender;
+        }
+        
+        renderCatalog(activeLang);
+      }
+    });
+  }
+
+  // Bind Apparel page Gender-filters Switcher delegates
+  if (clothesGenderFilterWrapper) {
+    clothesGenderFilterWrapper.addEventListener("click", (e) => {
+      const btn = e.target.closest(".gender-btn");
+      if (btn) {
+        const targetGender = btn.getAttribute("data-gender");
+        const buttons = clothesGenderFilterWrapper.querySelectorAll(".gender-btn");
+        
+        if (activeClothesGender === targetGender) {
+          // Toggle off
+          btn.classList.remove("active");
+          activeClothesGender = null;
+        } else {
+          // Select new gender
+          buttons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeClothesGender = targetGender;
+        }
+        
+        renderCatalog(activeLang);
+      }
+    });
+  }
+
+  // Bind Footwear page Gender-filters Switcher delegates
+  if (shoesGenderFilterWrapper) {
+    shoesGenderFilterWrapper.addEventListener("click", (e) => {
+      const btn = e.target.closest(".gender-btn");
+      if (btn) {
+        const targetGender = btn.getAttribute("data-gender");
+        const buttons = shoesGenderFilterWrapper.querySelectorAll(".gender-btn");
+        
+        if (activeShoesGender === targetGender) {
+          // Toggle off
+          btn.classList.remove("active");
+          activeShoesGender = null;
+        } else {
+          // Select new gender
+          buttons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          activeShoesGender = targetGender;
+        }
+        
+        renderCatalog(activeLang);
+      }
+    });
+  }
+
   // Page dynamic click event delegation for discover action buttons
   document.body.addEventListener("click", (e) => {
     if (e.target && e.target.classList.contains("product-card-btn")) {
@@ -625,6 +850,37 @@ document.addEventListener("DOMContentLoaded", () => {
     // Sync active sub-filters label translation
     if (subFilterWrapper) {
       const buttons = subFilterWrapper.querySelectorAll(".sub-btn");
+      buttons.forEach(btn => {
+        const key = btn.getAttribute("data-i18n");
+        if (key && translations[activeLang][key]) {
+          btn.textContent = translations[activeLang][key];
+        }
+      });
+    }
+
+    // Sync active gender filters label translation
+    if (genderFilterWrapper) {
+      const buttons = genderFilterWrapper.querySelectorAll(".gender-btn");
+      buttons.forEach(btn => {
+        const key = btn.getAttribute("data-i18n");
+        if (key && translations[activeLang][key]) {
+          btn.textContent = translations[activeLang][key];
+        }
+      });
+    }
+
+    if (clothesGenderFilterWrapper) {
+      const buttons = clothesGenderFilterWrapper.querySelectorAll(".gender-btn");
+      buttons.forEach(btn => {
+        const key = btn.getAttribute("data-i18n");
+        if (key && translations[activeLang][key]) {
+          btn.textContent = translations[activeLang][key];
+        }
+      });
+    }
+
+    if (shoesGenderFilterWrapper) {
+      const buttons = shoesGenderFilterWrapper.querySelectorAll(".gender-btn");
       buttons.forEach(btn => {
         const key = btn.getAttribute("data-i18n");
         if (key && translations[activeLang][key]) {

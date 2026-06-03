@@ -6,6 +6,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const views = document.querySelectorAll(".spa-view");
   const navLinks = document.querySelectorAll(".nav-link");
 
+  // Force website to always open on the home landing page upon fresh reload/restart
+  if (window.location.hash) {
+    const homeSections = ["#home", "#story", "#order", "#gallery", "#overview"];
+    const isHomeSub = homeSections.some(sec => window.location.hash.startsWith(sec));
+    // If the hash is an inner category subpage, reset the URL state to the homepage
+    if (!isHomeSub) {
+      window.history.replaceState("", document.title, window.location.pathname + window.location.search);
+    }
+  }
+
   const navigateTo = () => {
     let hash = window.location.hash || "#home";
     
