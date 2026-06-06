@@ -42,11 +42,81 @@ window.apiClient = {
     return this.request("/api/profile", { auth: true });
   },
 
+  updateProfile(profile) {
+    return this.request("/api/profile", {
+      method: "PUT",
+      auth: true,
+      body: profile
+    });
+  },
+
+  getOrders() {
+    return this.request("/api/orders", { auth: true });
+  },
+
+  getAdminOrders() {
+    return this.request("/api/admin/orders", { auth: true });
+  },
+
+  updateAdminOrder(orderId, payload) {
+    return this.request(`/api/admin/orders/${orderId}`, {
+      method: "PATCH",
+      auth: true,
+      body: payload
+    });
+  },
+
+  getAddresses() {
+    return this.request("/api/profile/addresses", { auth: true });
+  },
+
+  addAddress(address) {
+    return this.request("/api/profile/addresses", {
+      method: "POST",
+      auth: true,
+      body: address
+    });
+  },
+
+  deleteAddress(addressId) {
+    return this.request(`/api/profile/addresses/${addressId}`, {
+      method: "DELETE",
+      auth: true
+    });
+  },
+
+  setDefaultAddress(addressId) {
+    return this.request(`/api/profile/addresses/${addressId}/default`, {
+      method: "PUT",
+      auth: true
+    });
+  },
+
   createOrder(order) {
     return this.request("/api/orders", {
       method: "POST",
       auth: true,
       body: order
+    });
+  },
+
+  submitCheckout(checkout) {
+    return this.request("/api/checkout", {
+      method: "POST",
+      auth: true,
+      body: checkout
+    });
+  },
+
+  getReviews(productId) {
+    return this.request(`/api/products/${productId}/reviews`);
+  },
+
+  submitReview(productId, review) {
+    return this.request(`/api/products/${productId}/reviews`, {
+      method: "POST",
+      auth: true,
+      body: review
     });
   },
 

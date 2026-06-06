@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
       "#register":       "view-register",
       "#forgot-password":"view-forgot-password",
       "#account":        "view-account",
+      "#admin":          "view-admin",
       "#wishlist":       "view-wishlist",
       "#search":         "view-search",
       "#men":            "view-men",
@@ -40,13 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const isHomeSection = HOME_SECTIONS.some(sec => hash.startsWith(sec));
     const activeViewId = hashToViewId(hash);
 
-    // Auth guard for account page
-    if (hash === "#account") {
+    // Auth guard for account/admin pages
+    if (hash === "#account" || hash === "#admin") {
       try {
         const { data } = await window.supabaseClient.auth.getSession();
         if (!data?.session) {
           window.location.hash = "#login";
           return;
+        }
+
+        if (hash === "#admin") {
+          const { data: profile } = await window.apiClient.getProfile();
+          if (profile?.role !== "admin") {
+            window.location.hash = "#account";
+            return;
+          }
         }
       } catch (err) {
         console.error("[router] session check failed:", err);
@@ -81,6 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Page-specific triggers
     if (hash === "#cart")    window.cart?.renderCartPage();
     if (hash === "#account") window.accountPage?.load();
+    if (hash === "#admin")   window.adminPage?.load();
     if (hash === "#wishlist") window.wishlist?.renderPage();
     if (hash === "#search")  { window.searchPage?.focus(); }
     if (hash === "#men")     window.categoryPage?.render("men-products-container",   "male");

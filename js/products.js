@@ -428,7 +428,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const openProductModal = (id) => {
     activeProductId = id;
     window.activeProductId = id; // Exposed for orders.js
+    window.activeModalProduct = products.find(product => product.id === id) || null;
     populateModal(id, activeLang);
+    window.reviews?.load(id);
     modal.classList.add("active");
     document.body.style.overflow = "hidden";
   };
@@ -437,6 +439,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.classList.remove("active");
     activeProductId = null;
     selectedSize = null;
+    window.activeModalProduct = null;
     if (!document.body.classList.contains("intro-active")) {
       document.body.style.overflow = "";
     }

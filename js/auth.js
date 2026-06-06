@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let isLoginMode = true;
   let currentUser = null;
   let currentLang = localStorage.getItem("robabikia-lang") || "ar";
+  const authBtnDefaultHTML = authBtn ? authBtn.innerHTML : '';
+  const getAccountLabel = () => currentLang === 'en' ? 'My Account' : 'حسابي';
 
   const parseAuthCallbackError = () => {
     const params = new URLSearchParams(window.location.search);
@@ -78,7 +80,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const dict = translations[currentLang];
     if (session && session.user) {
       currentUser = session.user;
-      authBtn.textContent = dict['auth-logout'];
+      authBtn.innerHTML = authBtnDefaultHTML;
+      authBtn.setAttribute('title', getAccountLabel());
+      authBtn.setAttribute('aria-label', getAccountLabel());
       authModal.classList.remove('active');
       document.body.style.overflow = '';
 
@@ -96,7 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else {
       currentUser = null;
-      authBtn.textContent = dict['auth-login-title'];
+      authBtn.innerHTML = authBtnDefaultHTML;
+      authBtn.setAttribute('title', dict['auth-login-title']);
+      authBtn.setAttribute('aria-label', dict['auth-login-title']);
       adminPanelBtn.style.display = 'none';
     }
   };
@@ -117,10 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   authBtn.addEventListener('click', async () => {
-    const dict = translations[currentLang];
     if (currentUser) {
-      await window.supabaseClient.auth.signOut();
-      alert(dict['auth-logout-success']);
+      window.location.hash = '#account';
     } else {
       isLoginMode = true;
       syncModalMode();
@@ -204,8 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (adminPanelBtn) {
     adminPanelBtn.addEventListener('click', () => {
-      adminModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
+      window.location.hash = '#admin';
     });
   }
 
@@ -219,12 +222,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateAuthUIText = () => {
     const dict = translations[currentLang];
 
-    // Update auth button text
-    if (currentUser) {
-      authBtn.textContent = dict['auth-logout'];
-    } else {
-      authBtn.textContent = dict['auth-login-title'];
-    }
+    authBtn.innerHTML = authBtnDefaultHTML;
+    authBtn.setAttribute('title', currentUser ? getAccountLabel() : dict['auth-login-title']);
+    authBtn.setAttribute('aria-label', currentUser ? getAccountLabel() : dict['auth-login-title']);
 
     // Update Google button text
     if (authGoogleBtn) {

@@ -2,6 +2,14 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   let currentStep = 1;
+  const paymentLabels = {
+    cash_on_delivery: { ar: 'الدفع عند الاستلام', en: 'Cash on Delivery' },
+    vodafone_cash: { ar: 'فودافون كاش', en: 'Vodafone Cash' },
+    instapay: { ar: 'إنستاباي', en: 'InstaPay' }
+  };
+
+  const getPaymentLabel = (paymentMethod, lang) =>
+    paymentLabels[paymentMethod]?.[lang] || paymentLabels.cash_on_delivery[lang];
 
   const showStep = (step) => {
     document.querySelectorAll('.checkout-step').forEach((el, i) => {
@@ -17,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const populateReview = () => {
     const reviewList = document.getElementById('checkout-review-list');
     const reviewTotal = document.getElementById('checkout-review-total');
+    const reviewPayment = document.getElementById('checkout-review-payment');
     if (!reviewList || !window.cart) return;
 
     const items = window.cart.getItems();
@@ -41,6 +50,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (reviewTotal) {
       reviewTotal.textContent = window.utils?.formatPrice(window.cart.getTotal()) || '';
+    }
+    if (reviewPayment) {
+      const paymentMethod = document.getElementById('co-payment')?.value || 'cash_on_delivery';
+      reviewPayment.textContent = getPaymentLabel(paymentMethod, lang);
+    }
+  };
+
+  const prefillCheckout = async () => {
+    const lang = window.utils?.getCurrentLang() || 'ar';
+    try {
+      const { data: { session } } = await window.supabaseClient.auth.getSession();
+      if (!session) return;
+
+      const [profileRes, addressesRes] = await Promise.allSettled([
+        window.apiClient.getProfile(),
+        window.apiClient.getAddresses()
+      ]);
+
+      const profile = profileRes.status === 'fulfilled' ? profileRes.value?.data : null;
+      const addresses = addressesRes.status === 'fulfilled' ? addressesRes.value?.data || [] : [];
+      const defaultAddress = addresses.find((address) => address.is_default) || addresses[0];
+
+      const nameField = document.getElementById('co-name');
+      const phoneField = document.getElementById('co-phone');
+      const cityField = document.getElementById('co-city');
+      const addressField = document.getElementById('co-address');
+
+      if (nameField && !nameField.value.trim()) {
+        nameField.value = profile?.full_name || '';
+      }
+      if (phoneField && !phoneField.value.trim()) {
+        phoneField.value = profile?.phone_number || defaultAddress?.phone || '';
+      }
+      if (cityField && !cityField.value.trim()) {
+        cityField.value = defaultAddress?.city || '';
+      }
+      if (addressField && !addressField.value.trim()) {
+        addressField.value = defaultAddress?.street || profile?.address || '';
+      }
+    } catch (err) {
+      console.warn('[checkout] prefill failed:', err);
+      if (lang === 'en') return;
     }
   };
 
@@ -88,35 +139,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const { data: { session } } = await window.supabaseClient.auth.getSession();
+      if (!session) {
+        window.utils?.showToast(
+          lang === 'en' ? 'Please sign in to complete checkout.' : 'يرجى تسجيل الدخول لإتمام الطلب.',
+          'error'
+        );
+        window.location.hash = '#login';
+        return;
+      }
 
       const customerName = document.getElementById('co-name')?.value?.trim();
       const customerPhone = document.getElementById('co-phone')?.value?.trim();
       const city = document.getElementById('co-city')?.value?.trim();
       const address = document.getElementById('co-address')?.value?.trim();
+      const paymentMethod = document.getElementById('co-payment')?.value || 'cash_on_delivery';
       const fullAddress = `${city}، ${address}`;
 
-      if (session) {
-        // Place order for each item (existing API creates one order per product)
-        for (const item of items) {
-          await window.apiClient.createOrder({
-            product_id: item.productId,
-            size: item.size || 'Default',
-            customer_name: customerName,
-            customer_phone: customerPhone,
-            customer_address: fullAddress
-          });
-        }
-      }
+      await window.apiClient.submitCheckout({
+        items: items.map((item) => ({
+          productId: item.productId,
+          size: item.size || null,
+          qty: item.qty || 1
+        })),
+        customer_name: customerName,
+        customer_phone: customerPhone,
+        customer_address: fullAddress,
+        payment_method: paymentMethod
+      });
 
       window.cart.clearCart();
       window.location.hash = '#order-confirm';
 
     } catch (err) {
       console.error('Checkout error:', err);
-      const msg = lang === 'en'
+      const msg = err?.message || (lang === 'en'
         ? 'Order failed. Please try again.'
-        : 'حدث خطأ أثناء تأكيد الطلب. يرجى المحاولة مرة أخرى.';
+        : 'حدث خطأ أثناء تأكيد الطلب. يرجى المحاولة مرة أخرى.');
       window.utils?.showToast(msg, 'error');
+      alert(msg);
     } finally {
       const btn = document.getElementById('checkout-submit-btn');
       if (btn) {
@@ -130,6 +190,11 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('hashchange', () => {
     if (window.location.hash === '#checkout') {
       showStep(1);
+      prefillCheckout();
     }
   });
+
+  if (window.location.hash === '#checkout') {
+    prefillCheckout();
+  }
 });

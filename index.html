@@ -26,7 +26,7 @@
   <link rel="stylesheet" href="css/cart.css?v=1.0">
   <link rel="stylesheet" href="css/checkout.css?v=1.0">
   <link rel="stylesheet" href="css/auth.css?v=1.0">
-  <link rel="stylesheet" href="css/account.css?v=1.0">
+  <link rel="stylesheet" href="css/account.css?v=1.1">
   <link rel="stylesheet" href="css/search.css?v=1.0">
 </head>
 <body>
@@ -595,6 +595,17 @@
     </div>
 
     <!-- ==========================================
+         SPA VIEW: ADMIN DASHBOARD
+         ========================================== -->
+    <div id="view-admin" class="spa-view" style="display:none;">
+      <div class="account-page-container admin-page-container">
+        <div id="admin-dashboard-container">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
          SPA VIEW: WISHLIST
          ========================================== -->
     <div id="view-wishlist" class="spa-view" style="display:none;">
@@ -739,6 +750,14 @@
               <label for="co-address">العنوان بالتفصيل <span class="req">*</span></label>
               <textarea id="co-address" placeholder="الشارع، رقم المبنى، الشقة..." autocomplete="street-address"></textarea>
             </div>
+            <div class="form-field">
+              <label for="co-payment">طريقة الدفع <span class="req">*</span></label>
+              <select id="co-payment">
+                <option value="cash_on_delivery">الدفع عند الاستلام</option>
+                <option value="vodafone_cash">فودافون كاش</option>
+                <option value="instapay">InstaPay</option>
+              </select>
+            </div>
             <div class="checkout-actions">
               <a href="#cart" class="btn btn-outline">العودة للسلة</a>
               <button id="checkout-to-review-btn" class="btn btn-gold">مراجعة الطلب</button>
@@ -756,6 +775,10 @@
             <div class="review-total-row">
               <span>الإجمالي</span>
               <span id="checkout-review-total">٠ ج.م</span>
+            </div>
+            <div class="review-total-row">
+              <span>الدفع</span>
+              <span id="checkout-review-payment">الدفع عند الاستلام</span>
             </div>
             <div class="checkout-actions">
               <button id="checkout-back-btn" class="btn btn-outline">تعديل البيانات</button>
@@ -1143,21 +1166,22 @@
 
   <!-- Modular Scripts -->
   <script src="js/supabase-client.js?v=1.2"></script>
-  <script src="js/api-client.js?v=1.1"></script>
-  <script src="js/auth.js?v=1.4"></script>
+  <script src="js/api-client.js?v=1.3"></script>
+  <script src="js/auth.js?v=1.5"></script>
   <script src="js/orders.js?v=1.3"></script>
   <script src="js/translations.js?v=1.3"></script>
   <script src="js/lang.js?v=1.2"></script>
   <script src="js/utils.js?v=1.0"></script>
   <script src="js/cart.js?v=1.0"></script>
-  <script src="js/checkout.js?v=1.0"></script>
+  <script src="js/checkout.js?v=1.1"></script>
   <script src="js/wishlist.js?v=1.0"></script>
-  <script src="js/account.js?v=1.1"></script>
+  <script src="js/account.js?v=1.2"></script>
+  <script src="js/admin.js?v=1.1"></script>
   <script src="js/search.js?v=1.0"></script>
   <script src="js/reviews.js?v=1.0"></script>
-  <script src="js/router.js?v=1.2"></script>
+  <script src="js/router.js?v=1.3"></script>
   <script src="js/intro.js?v=1.2"></script>
-  <script src="js/products.js?v=1.3"></script>
+  <script src="js/products.js?v=1.4"></script>
   <script src="js/scroll.js?v=1.3"></script>
   <script src="js/gallery.js?v=1.2"></script>
 </body>

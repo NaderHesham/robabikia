@@ -54,6 +54,16 @@ window.accountPage = {
     return `<span class="order-status-badge ${s.cls}">${t(s.ar, s.en)}</span>`;
   },
 
+  _paymentLabel(method) {
+    const map = {
+      cash_on_delivery: { ar: 'الدفع عند الاستلام', en: 'Cash on Delivery' },
+      vodafone_cash: { ar: 'فودافون كاش', en: 'Vodafone Cash' },
+      instapay: { ar: 'إنستاباي', en: 'InstaPay' }
+    };
+    const value = map[method] || { ar: method || '—', en: method || '—' };
+    return t(value.ar, value.en);
+  },
+
   _buildAddressesSection(addresses) {
     const cards = addresses.length === 0
       ? `<p class="account-empty-msg">${t('لا توجد عناوين محفوظة.', 'No saved addresses.')}</p>`
@@ -130,6 +140,8 @@ window.accountPage = {
               <div class="order-row-info">
                 <p class="order-product-name">${prodName}</p>
                 ${o.size ? `<p class="order-size">${t('المقاس', 'Size')}: ${o.size}</p>` : ''}
+                <p class="order-size">${t('الكمية', 'Qty')}: ${o.qty || 1}</p>
+                <p class="order-size">${t('الدفع', 'Payment')}: ${this._paymentLabel(o.payment_method)}</p>
                 <p class="order-date">${date}</p>
               </div>
               ${this._statusBadge(o.status)}

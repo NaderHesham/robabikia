@@ -1,6 +1,8 @@
 const path = require("path");
+const { randomUUID } = require("crypto");
 const express = require("express");
 const dotenv = require("dotenv");
+const ws = require("ws");
 const { createClient } = require("@supabase/supabase-js");
 
 dotenv.config();
@@ -23,6 +25,9 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: false,
     persistSession: false
+  },
+  realtime: {
+    transport: ws
   }
 });
 
@@ -36,6 +41,86 @@ const normalizeProduct = (product) => ({
       ? JSON.parse(product.sizes)
       : []
 });
+
+const parsePrice = (price) => {
+  if (typeof price === "number") return price;
+  return Number(
+    String(price || "")
+      .replace(/[٠-٩]/g, (digit) => String(digit.charCodeAt(0) - 0x0660))
+      .replace(/[^0-9.]/g, "")
+  ) || 0;
+};
+
+const PAYMENT_METHODS = new Set([
+  "cash_on_delivery",
+  "vodafone_cash",
+  "instapay"
+]);
+
+const isLegacyOrdersSchemaError = (error) => {
+  const message = String(error?.message || "").toLowerCase();
+  const details = String(error?.details || "").toLowerCase();
+  const hint = String(error?.hint || "").toLowerCase();
+  const combined = `${message} ${details} ${hint}`;
+
+  return (
+    error?.code === "42703" ||
+    error?.code === "PGRST204" ||
+    /qty|payment_method|checkout_reference|unit_price|order_total/.test(combined)
+  );
+};
+
+const toLegacyOrderRow = (row) => ({
+  user_id: row.user_id,
+  product_id: row.product_id,
+  size: row.size,
+  status: row.status,
+  customer_name: row.customer_name,
+  customer_phone: row.customer_phone,
+  customer_address: row.customer_address
+});
+
+const insertOrdersCompat = async (client, rows) => {
+  let response = await client.from("orders").insert(rows).select();
+
+  if (response.error && isLegacyOrdersSchemaError(response.error)) {
+    response = await client
+      .from("orders")
+      .insert(rows.map(toLegacyOrderRow))
+      .select();
+  }
+
+  return response;
+};
+
+const selectOrdersCompat = async (client, userId) => {
+  let response = await client
+    .from("orders")
+    .select("id, status, size, qty, payment_method, checkout_reference, unit_price, order_total, customer_name, customer_address, created_at, product_id, products(id, ar_name, en_name, ar_price, en_price, image)")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+
+  if (response.error && isLegacyOrdersSchemaError(response.error)) {
+    response = await client
+      .from("orders")
+      .select("id, status, size, customer_name, customer_address, created_at, product_id, products(id, ar_name, en_name, ar_price, en_price, image)")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+
+    if (!response.error && Array.isArray(response.data)) {
+      response.data = response.data.map((order) => ({
+        ...order,
+        qty: 1,
+        payment_method: "cash_on_delivery",
+        checkout_reference: null,
+        unit_price: null,
+        order_total: null
+      }));
+    }
+  }
+
+  return response;
+};
 
 const getAccessToken = (req) => {
   const authHeader = req.headers.authorization || "";
@@ -51,6 +136,9 @@ const createAuthedClient = (token) =>
     auth: {
       autoRefreshToken: false,
       persistSession: false
+    },
+    realtime: {
+      transport: ws
     },
     global: {
       headers: {
@@ -105,6 +193,14 @@ const requireAdmin = async (req, res, next) => {
   next();
 };
 
+const ADMIN_ORDER_STATUSES = new Set([
+  "pending",
+  "confirmed",
+  "shipped",
+  "delivered",
+  "cancelled"
+]);
+
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true });
 });
@@ -143,6 +239,8 @@ app.post("/api/orders", requireUser, async (req, res) => {
   const {
     product_id: productId,
     size,
+    qty,
+    payment_method: paymentMethod,
     customer_name: customerName,
     customer_phone: customerPhone,
     customer_address: customerAddress
@@ -164,38 +262,221 @@ app.post("/api/orders", requireUser, async (req, res) => {
     return res.status(400).json({ error: "Selected product does not exist." });
   }
 
-  const { data, error } = await userClient
-    .from("orders")
-    .insert({
+  const quantity = Number(qty) > 0 ? Number(qty) : 1;
+  const safePaymentMethod = PAYMENT_METHODS.has(paymentMethod)
+    ? paymentMethod
+    : "cash_on_delivery";
+
+  const { data: fullProduct } = await supabase
+    .from("products")
+    .select("ar_price, en_price")
+    .eq("id", productId)
+    .single();
+
+  const unitPrice = parsePrice(fullProduct?.ar_price || fullProduct?.en_price);
+  const orderTotal = unitPrice * quantity;
+
+  const { data, error } = await insertOrdersCompat(userClient, [{
       user_id: req.user.id,
       product_id: productId,
       size: size || null,
+      qty: quantity,
       status: "pending",
+      payment_method: safePaymentMethod,
+      checkout_reference: randomUUID(),
+      unit_price: unitPrice,
+      order_total: orderTotal,
       customer_name: customerName,
       customer_phone: customerPhone,
       customer_address: customerAddress || null
-    })
-    .select()
-    .single();
+    }]);
 
   if (error) {
     return res.status(500).json({ error: "Failed to create order." });
   }
 
-  res.status(201).json({ data });
+  res.status(201).json({ data: Array.isArray(data) ? data[0] : data });
+});
+
+app.post("/api/checkout", requireUser, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+  const {
+    items,
+    customer_name: customerName,
+    customer_phone: customerPhone,
+    customer_address: customerAddress,
+    payment_method: paymentMethod
+  } = req.body || {};
+
+  if (!Array.isArray(items) || items.length === 0) {
+    return res.status(400).json({ error: "At least one cart item is required." });
+  }
+
+  if (!customerName || !customerPhone || !customerAddress) {
+    return res.status(400).json({
+      error: "customer_name, customer_phone, and customer_address are required."
+    });
+  }
+
+  const safePaymentMethod = PAYMENT_METHODS.has(paymentMethod)
+    ? paymentMethod
+    : "cash_on_delivery";
+  const productIds = [...new Set(items.map((item) => item.productId).filter(Boolean))];
+
+  const { data: products, error: productsError } = await supabase
+    .from("products")
+    .select("id, ar_price, en_price")
+    .in("id", productIds);
+
+  if (productsError) {
+    return res.status(500).json({ error: "Failed to load selected products." });
+  }
+
+  const productsMap = new Map((products || []).map((product) => [product.id, product]));
+  const checkoutReference = randomUUID();
+  const orderRows = [];
+
+  for (const item of items) {
+    const product = productsMap.get(item.productId);
+    if (!product) {
+      return res.status(400).json({ error: `Product not found: ${item.productId}` });
+    }
+
+    const quantity = Number(item.qty) > 0 ? Number(item.qty) : 1;
+    const unitPrice = parsePrice(product.ar_price || product.en_price);
+
+    orderRows.push({
+      user_id: req.user.id,
+      product_id: item.productId,
+      size: item.size || null,
+      qty: quantity,
+      status: "pending",
+      payment_method: safePaymentMethod,
+      checkout_reference: checkoutReference,
+      unit_price: unitPrice,
+      order_total: unitPrice * quantity,
+      customer_name: customerName,
+      customer_phone: customerPhone,
+      customer_address: customerAddress
+    });
+  }
+
+  const { data, error } = await insertOrdersCompat(userClient, orderRows);
+
+  if (error) {
+    return res.status(500).json({ error: error.message || "Failed to complete checkout." });
+  }
+
+  const totalAmount = orderRows.reduce((sum, row) => sum + (row.order_total || 0), 0);
+  const itemCount = orderRows.reduce((sum, row) => sum + (row.qty || 0), 0);
+
+  res.status(201).json({
+    data: {
+      checkout_reference: checkoutReference,
+      payment_method: safePaymentMethod,
+      total_amount: totalAmount,
+      item_count: itemCount,
+      orders: (data || []).map((order, index) => ({
+        ...order,
+        qty: order.qty ?? orderRows[index]?.qty ?? 1,
+        payment_method: order.payment_method ?? safePaymentMethod,
+        checkout_reference: order.checkout_reference ?? checkoutReference,
+        unit_price: order.unit_price ?? orderRows[index]?.unit_price ?? null,
+        order_total: order.order_total ?? orderRows[index]?.order_total ?? null
+      }))
+    }
+  });
 });
 
 app.get("/api/orders", requireUser, async (req, res) => {
   const userClient = createAuthedClient(req.accessToken);
 
-  const { data, error } = await userClient
-    .from("orders")
-    .select("id, status, size, customer_name, customer_address, created_at, product_id, products(id, ar_name, en_name, ar_price, en_price, image)")
-    .eq("user_id", req.user.id)
-    .order("created_at", { ascending: false });
+  const { data, error } = await selectOrdersCompat(userClient, req.user.id);
 
   if (error) {
     return res.status(500).json({ error: "Failed to load orders." });
+  }
+
+  res.json({ data });
+});
+
+app.get("/api/admin/orders", requireUser, requireAdmin, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+  const { data, error } = await selectOrdersCompat(userClient, req.user.id);
+
+  if (!error) {
+    const { data: allOrders, error: adminError } = await userClient
+      .from("orders")
+      .select("id, status, size, qty, payment_method, checkout_reference, unit_price, order_total, customer_name, customer_phone, customer_address, created_at, user_id, product_id, products(id, ar_name, en_name, ar_price, en_price, image)")
+      .order("created_at", { ascending: false });
+
+    if (!adminError) {
+      return res.json({ data: allOrders });
+    }
+  }
+
+  const { data: fallbackOrders, error: fallbackError } = await userClient
+    .from("orders")
+    .select("id, status, size, customer_name, customer_phone, customer_address, created_at, user_id, product_id, products(id, ar_name, en_name, ar_price, en_price, image)")
+    .order("created_at", { ascending: false });
+
+  if (fallbackError) {
+    return res.status(500).json({ error: "Failed to load admin orders." });
+  }
+
+  res.json({
+    data: fallbackOrders.map((order) => ({
+      ...order,
+      qty: 1,
+      payment_method: "cash_on_delivery",
+      checkout_reference: null,
+      unit_price: null,
+      order_total: null
+    }))
+  });
+});
+
+app.patch("/api/admin/orders/:id", requireUser, requireAdmin, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+  const nextStatus = String(req.body?.status || "").trim().toLowerCase();
+
+  if (!ADMIN_ORDER_STATUSES.has(nextStatus)) {
+    return res.status(400).json({ error: "Invalid order status." });
+  }
+
+  const { data, error } = await userClient
+    .from("orders")
+    .update({ status: nextStatus })
+    .eq("id", req.params.id)
+    .select("id, status, size, qty, payment_method, checkout_reference, unit_price, order_total, customer_name, customer_phone, customer_address, created_at, user_id, product_id")
+    .single();
+
+  if (error && isLegacyOrdersSchemaError(error)) {
+    const legacyResponse = await userClient
+      .from("orders")
+      .update({ status: nextStatus })
+      .eq("id", req.params.id)
+      .select("id, status, size, customer_name, customer_phone, customer_address, created_at, user_id, product_id")
+      .single();
+
+    if (legacyResponse.error) {
+      return res.status(500).json({ error: "Failed to update order status." });
+    }
+
+    return res.json({
+      data: {
+        ...legacyResponse.data,
+        qty: 1,
+        payment_method: "cash_on_delivery",
+        checkout_reference: null,
+        unit_price: null,
+        order_total: null
+      }
+    });
+  }
+
+  if (error) {
+    return res.status(500).json({ error: "Failed to update order status." });
   }
 
   res.json({ data });
