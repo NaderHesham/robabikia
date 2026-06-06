@@ -439,11 +439,11 @@
   .hero-title {
     font-size: 3.2rem;
   }
-  
+
   .logo-text-ar {
     font-size: 1.5rem;
   }
-  
+
   .nav-cta {
     display: none; /* Hide WhatsApp button in small viewport nav to save space */
   }

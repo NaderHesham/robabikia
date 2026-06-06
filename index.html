@@ -8,7 +8,7 @@
   <meta name="author" content="Robabikia Perfumes">
   
   <title data-i18n="doc-title">روبابيكيا للعطور والملابس 🌸 Robabikia — تراث فاخر بلمسة عصرية</title>
-  
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,8 +25,6 @@
 </head>
 <body>
 
-  <!-- Film Grain Overlay -->
-  <div class="grain-overlay"></div>
 
   <!-- Custom Bottle SVG Cursor -->
   <div class="custom-cursor" id="custom-cursor">
@@ -541,8 +539,8 @@
           </a>
 
           <!-- Native DB Order Button -->
-          <button id="modal-db-order-btn" class="btn btn-gold modal-order-btn hover-vibrate">
-            <span>تأكيد الطلب المباشر</span>
+          <button id="modal-db-order-btn" class="btn btn-gold modal-order-btn hover-vibrate" data-i18n="modal-db-order-btn">
+            تأكيد الطلب المباشر
           </button>
         </div>
       </div>
@@ -578,7 +576,7 @@
               <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
               <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
             </svg>
-            <span>الدخول بواسطة Google</span>
+            <span data-i18n="auth-google-btn">الدخول بواسطة Google</span>
           </button>
 
           <div class="auth-divider"><span>أو</span></div>
@@ -633,9 +631,9 @@
       <button class="modal-close-btn" id="order-close-btn" aria-label="Close">✕</button>
       <h2 style="margin-bottom: 1rem; color: var(--color-gold);">إتمام الطلب</h2>
       <form id="order-form" style="display: flex; flex-direction: column; gap: 1rem;">
-        <input type="text" id="order-name" placeholder="الاسم بالكامل" required style="padding: 10px; border-radius: 4px; border: 1px solid var(--color-gold); background: transparent; color: #fff;">
-        <input type="tel" id="order-phone" placeholder="رقم الهاتف" required style="padding: 10px; border-radius: 4px; border: 1px solid var(--color-gold); background: transparent; color: #fff;">
-        <textarea id="order-address" placeholder="العنوان بالتفصيل" required style="padding: 10px; border-radius: 4px; border: 1px solid var(--color-gold); background: transparent; color: #fff; min-height: 80px;"></textarea>
+        <input type="text" id="order-name" placeholder="الاسم بالكامل" data-i18n-placeholder="order-name-placeholder" required style="padding: 10px; border-radius: 4px; border: 1px solid var(--color-gold); background: transparent; color: #fff;">
+        <input type="tel" id="order-phone" placeholder="رقم الهاتف" data-i18n-placeholder="order-phone-placeholder" required style="padding: 10px; border-radius: 4px; border: 1px solid var(--color-gold); background: transparent; color: #fff;">
+        <textarea id="order-address" placeholder="العنوان بالتفصيل" data-i18n-placeholder="order-address-placeholder" required style="padding: 10px; border-radius: 4px; border: 1px solid var(--color-gold); background: transparent; color: #fff; min-height: 80px;"></textarea>
       </form>
     </div>
   </div>

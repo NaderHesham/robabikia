@@ -20,12 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let isLoginMode = true;
   let currentUser = null;
-
-  const isEmailNotConfirmedError = (error) => {
-    const message = String(error?.message || '').toLowerCase();
-    const code = String(error?.code || '').toLowerCase();
-    return message.includes('email not confirmed') || code.includes('email_not_confirmed');
-  };
+  let currentLang = localStorage.getItem("robabikia-lang") || "ar";
 
   const parseAuthCallbackError = () => {
     const params = new URLSearchParams(window.location.search);
@@ -56,21 +51,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const syncModalMode = () => {
     const title = document.getElementById('auth-modal-title');
     const subtitle = document.getElementById('auth-modal-subtitle');
+    const dict = translations[currentLang];
 
     if (isLoginMode) {
-      if (title) title.textContent = 'تسجيل الدخول';
-      if (subtitle) subtitle.textContent = 'أهلاً بعودتك في روبابيكيا';
-      authSubmitBtn.textContent = 'دخول';
-      authToggleMode.textContent = 'ليس لديك حساب؟ إنشاء حساب جديد';
+      if (title) title.textContent = dict['auth-login-title'];
+      if (subtitle) subtitle.textContent = dict['auth-login-subtitle'];
+      authSubmitBtn.textContent = dict['auth-submit-login'];
+      authToggleMode.textContent = dict['auth-toggle-to-signup'];
       authSignupFields.style.display = 'none';
       authName.required = false;
       authGender.required = false;
       authDob.required = false;
     } else {
-      if (title) title.textContent = 'إنشاء حساب جديد';
-      if (subtitle) subtitle.textContent = 'انضم إلى عائلة روبابيكيا الراقية';
-      authSubmitBtn.textContent = 'إنشاء حساب';
-      authToggleMode.textContent = 'لديك حساب بالفعل؟ تسجيل الدخول';
+      if (title) title.textContent = dict['auth-signup-title'];
+      if (subtitle) subtitle.textContent = dict['auth-signup-subtitle'];
+      authSubmitBtn.textContent = dict['auth-submit-signup'];
+      authToggleMode.textContent = dict['auth-toggle-to-login'];
       authSignupFields.style.display = 'flex';
       authName.required = true;
       authGender.required = true;
@@ -79,9 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const handleSessionChange = async (session) => {
+    const dict = translations[currentLang];
     if (session && session.user) {
       currentUser = session.user;
-      authBtn.textContent = 'تسجيل الخروج';
+      authBtn.textContent = dict['auth-logout'];
       authModal.classList.remove('active');
       document.body.style.overflow = '';
 
@@ -99,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     } else {
       currentUser = null;
-      authBtn.textContent = 'تسجيل الدخول';
+      authBtn.textContent = dict['auth-login-title'];
       adminPanelBtn.style.display = 'none';
     }
   };
@@ -120,9 +117,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   authBtn.addEventListener('click', async () => {
+    const dict = translations[currentLang];
     if (currentUser) {
       await window.supabaseClient.auth.signOut();
-      alert('تم تسجيل الخروج بنجاح');
+      alert(dict['auth-logout-success']);
     } else {
       isLoginMode = true;
       syncModalMode();
@@ -145,9 +143,10 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const email = authEmail.value;
     const password = authPassword.value;
+    const dict = translations[currentLang];
 
     authSubmitBtn.disabled = true;
-    authSubmitBtn.textContent = 'جاري التحميل...';
+    authSubmitBtn.textContent = dict['auth-loading'];
 
     try {
       if (isLoginMode) {
@@ -156,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
           password
         });
         if (error) throw error;
-        alert('تم تسجيل الدخول بنجاح!');
+        alert(dict['auth-login-success']);
       } else {
         const { data, error } = await window.supabaseClient.auth.signUp({
           email,
@@ -171,30 +170,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (error) throw error;
 
-        if (data?.user && !data?.session) {
-          alert('تم إنشاء الحساب، لكن يجب تأكيد البريد الإلكتروني أولاً. افتح Gmail واضغط رابط التأكيد ثم سجّل الدخول.');
-        } else {
-          alert('تم إنشاء الحساب وتسجيل الدخول بنجاح!');
-        }
+        alert(dict['auth-signup-success']);
       }
 
       authModal.classList.remove('active');
       document.body.style.overflow = '';
       authForm.reset();
     } catch (error) {
-      if (isEmailNotConfirmedError(error)) {
-        alert('هذا البريد غير مؤكد بعد. افتح Gmail واضغط رابط التأكيد أولاً، أو عطّل Email Confirmation من إعدادات Supabase إذا كان هذا بيئة تطوير.');
-      } else {
-        alert(error.message || 'حدث خطأ. حاول مرة أخرى.');
-      }
+      alert(error.message || dict['auth-error']);
     } finally {
       authSubmitBtn.disabled = false;
-      authSubmitBtn.textContent = isLoginMode ? 'دخول' : 'إنشاء حساب';
+      authSubmitBtn.textContent = isLoginMode ? dict['auth-submit-login'] : dict['auth-submit-signup'];
     }
   });
 
   if (authGoogleBtn) {
     authGoogleBtn.addEventListener('click', async () => {
+      const dict = translations[currentLang];
       try {
         const redirectUrl = `${window.location.origin}${window.location.pathname}`;
         const { error } = await window.supabaseClient.auth.signInWithOAuth({
@@ -205,10 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         if (error) throw error;
       } catch (err) {
-        alert(
-          err.message ||
-          'تعذر تسجيل الدخول عبر Google. تأكد من تفعيل Google Provider وإضافة رابط الموقع الحالي إلى Redirect URLs في Supabase.'
-        );
+        alert(err.message || dict['auth-google-error']);
       }
     });
   }
@@ -227,5 +216,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  initAuth();
+  const updateAuthUIText = () => {
+    const dict = translations[currentLang];
+
+    // Update auth button text
+    if (currentUser) {
+      authBtn.textContent = dict['auth-logout'];
+    } else {
+      authBtn.textContent = dict['auth-login-title'];
+    }
+
+    // Update Google button text
+    if (authGoogleBtn) {
+      authGoogleBtn.textContent = dict['auth-google-btn'];
+    }
+  };
+
+  // Listen to language changes
+  document.addEventListener('languageChanged', (e) => {
+    currentLang = e.detail.lang;
+
+    updateAuthUIText();
+
+    // Update modal if it's open
+    if (authModal.classList.contains('active')) {
+      syncModalMode();
+    }
+  });
+
+  initAuth().then(() => {
+    updateAuthUIText();
+  });
 });

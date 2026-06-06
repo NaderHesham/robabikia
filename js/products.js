@@ -623,8 +623,38 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
+    // Update modal elements when language changes
+    if (mSizeWrapper) {
+      const sizeTitle = mSizeWrapper.querySelector(".modal-size-title");
+      if (sizeTitle) {
+        const key = sizeTitle.getAttribute("data-i18n");
+        if (key && translations[activeLang][key]) {
+          sizeTitle.textContent = translations[activeLang][key];
+        }
+      }
+    }
+
+    const dbOrderBtn = document.getElementById("modal-db-order-btn");
+    if (dbOrderBtn) {
+      const key = dbOrderBtn.getAttribute("data-i18n");
+      if (key && translations[activeLang][key]) {
+        dbOrderBtn.textContent = translations[activeLang][key];
+      }
+    }
+
+    const waOrderBtn = document.getElementById("modal-whatsapp-link");
+    if (waOrderBtn) {
+      const span = waOrderBtn.querySelector("span");
+      if (span) {
+        const key = span.getAttribute("data-i18n");
+        if (key && translations[activeLang][key]) {
+          span.textContent = translations[activeLang][key];
+        }
+      }
+    }
+
     renderCatalog(activeLang);
-    
+
     if (activeProductId && modal.classList.contains("active")) {
       populateModal(activeProductId, activeLang);
     }

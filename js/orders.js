@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const orderAddress = document.getElementById('order-address');
   const orderSubmitBtn = document.getElementById('order-submit-btn');
 
+  let currentLang = localStorage.getItem("robabikia-lang") || "ar";
+
   // We need to know which product and size is selected.
   // In products.js, activeProductId and selectedSize are scoped locally.
   // To bypass this cleanly without massive refactor, we can extract them from the DOM
@@ -15,11 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
   dbOrderBtn.addEventListener('click', async () => {
     const { data: { session } } = await window.supabaseClient.auth.getSession();
+    const dict = translations[currentLang];
     if (!session) {
-      alert('يرجى تسجيل الدخول أولاً لإتمام الطلب');
+      alert(dict['order-require-login']);
       return;
     }
-    
+
     // Open order modal
     orderModal.classList.add('active');
     document.body.style.overflow = "hidden";
@@ -29,12 +32,24 @@ document.addEventListener('DOMContentLoaded', () => {
     orderModal.classList.remove('active');
   });
 
+  // Listen to language changes
+  document.addEventListener('languageChanged', (e) => {
+    currentLang = e.detail.lang;
+    const dict = translations[currentLang];
+
+    // Update order submit button text if not disabled
+    if (!orderSubmitBtn.disabled) {
+      orderSubmitBtn.textContent = dict['order-submit-btn'];
+    }
+  });
+
   orderForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+    const dict = translations[currentLang];
+
     const { data: { session } } = await window.supabaseClient.auth.getSession();
     if (!session) {
-      alert('انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى.');
+      alert(dict['order-session-expired']);
       return;
     }
 
@@ -45,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     orderSubmitBtn.disabled = true;
-    orderSubmitBtn.textContent = 'جاري الإرسال...';
+    orderSubmitBtn.textContent = dict['order-submitting'];
 
     try {
       await window.apiClient.createOrder({
@@ -56,10 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
         customer_address: orderAddress.value
       });
 
-      alert('تم إرسال طلبك بنجاح! سنتواصل معك قريباً.');
+      alert(dict['order-success']);
       orderModal.classList.remove('active');
       orderForm.reset();
-      
+
       // Close the main product modal as well
       const productModal = document.getElementById('product-modal');
       if (productModal) productModal.classList.remove('active');
@@ -67,10 +82,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     } catch (error) {
       console.error(error);
-      alert('حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.');
+      alert(dict['order-error']);
     } finally {
       orderSubmitBtn.disabled = false;
-      orderSubmitBtn.textContent = 'تأكيد الطلب';
+      orderSubmitBtn.textContent = dict['order-submit-btn'];
     }
   });
 });
