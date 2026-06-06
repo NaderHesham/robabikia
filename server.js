@@ -1,7 +1,6 @@
 const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
-const ws = require("ws");
 const { createClient } = require("@supabase/supabase-js");
 
 dotenv.config();
@@ -24,9 +23,6 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: false,
     persistSession: false
-  },
-  realtime: {
-    transport: ws
   }
 });
 
@@ -56,9 +52,6 @@ const createAuthedClient = (token) =>
       autoRefreshToken: false,
       persistSession: false
     },
-    realtime: {
-      transport: ws
-    },
     global: {
       headers: {
         Authorization: `Bearer ${token}`
@@ -73,18 +66,23 @@ const requireUser = async (req, res, next) => {
     return res.status(401).json({ error: "Authentication required." });
   }
 
-  const {
-    data: { user },
-    error
-  } = await supabase.auth.getUser(token);
+  try {
+    const timeout = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Auth timeout")), 8000)
+    );
+    const authCall = supabase.auth.getUser(token);
+    const { data: { user }, error } = await Promise.race([authCall, timeout]);
 
-  if (error || !user) {
-    return res.status(401).json({ error: "Invalid or expired session." });
+    if (error || !user) {
+      return res.status(401).json({ error: "Invalid or expired session." });
+    }
+
+    req.user = user;
+    req.accessToken = token;
+    next();
+  } catch {
+    return res.status(503).json({ error: "Auth service unavailable." });
   }
-
-  req.user = user;
-  req.accessToken = token;
-  next();
 };
 
 const requireAdmin = async (req, res, next) => {
@@ -131,7 +129,7 @@ app.get("/api/profile", requireUser, async (req, res) => {
     .from("profiles")
     .select("id, full_name, phone_number, address, gender, date_of_birth, role")
     .eq("id", req.user.id)
-    .single();
+    .maybeSingle();
 
   if (error) {
     return res.status(500).json({ error: "Failed to load profile." });
@@ -186,6 +184,154 @@ app.post("/api/orders", requireUser, async (req, res) => {
 
   res.status(201).json({ data });
 });
+
+app.get("/api/orders", requireUser, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+
+  const { data, error } = await userClient
+    .from("orders")
+    .select("id, status, size, customer_name, customer_address, created_at, product_id, products(id, ar_name, en_name, ar_price, en_price, image)")
+    .eq("user_id", req.user.id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return res.status(500).json({ error: "Failed to load orders." });
+  }
+
+  res.json({ data });
+});
+
+app.put("/api/profile", requireUser, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+  const { full_name, phone_number, address } = req.body || {};
+
+  const { data, error } = await userClient
+    .from("profiles")
+    .update({ full_name, phone_number, address })
+    .eq("id", req.user.id)
+    .select("id, full_name, phone_number, address, gender, date_of_birth, role")
+    .single();
+
+  if (error) {
+    return res.status(500).json({ error: "Failed to update profile." });
+  }
+
+  res.json({ data });
+});
+
+// ── Addresses ────────────────────────────────────────────────────────────────
+
+app.get("/api/profile/addresses", requireUser, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+  const { data, error } = await userClient
+    .from("addresses")
+    .select("*")
+    .eq("user_id", req.user.id)
+    .order("is_default", { ascending: false })
+    .order("created_at", { ascending: true });
+
+  if (error) return res.status(500).json({ error: "Failed to load addresses." });
+  res.json({ data });
+});
+
+app.post("/api/profile/addresses", requireUser, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+  const { label, city, street, phone, is_default } = req.body || {};
+
+  if (!city || !street) {
+    return res.status(400).json({ error: "city and street are required." });
+  }
+
+  if (is_default) {
+    await userClient.from("addresses").update({ is_default: false }).eq("user_id", req.user.id);
+  }
+
+  const { data, error } = await userClient
+    .from("addresses")
+    .insert({
+      user_id: req.user.id,
+      label: label || "المنزل",
+      city,
+      street,
+      phone: phone || null,
+      is_default: !!is_default
+    })
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: "Failed to add address." });
+  res.status(201).json({ data });
+});
+
+app.delete("/api/profile/addresses/:id", requireUser, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+  const { error } = await userClient
+    .from("addresses")
+    .delete()
+    .eq("id", req.params.id)
+    .eq("user_id", req.user.id);
+
+  if (error) return res.status(500).json({ error: "Failed to delete address." });
+  res.json({ success: true });
+});
+
+app.put("/api/profile/addresses/:id/default", requireUser, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+  await userClient.from("addresses").update({ is_default: false }).eq("user_id", req.user.id);
+
+  const { data, error } = await userClient
+    .from("addresses")
+    .update({ is_default: true })
+    .eq("id", req.params.id)
+    .eq("user_id", req.user.id)
+    .select()
+    .single();
+
+  if (error) return res.status(500).json({ error: "Failed to update default address." });
+  res.json({ data });
+});
+
+// ── Reviews ──────────────────────────────────────────────────────────────────
+
+app.get("/api/products/:id/reviews", async (req, res) => {
+  const { data, error } = await supabase
+    .from("reviews")
+    .select("id, rating, body, created_at, profiles(full_name)")
+    .eq("product_id", req.params.id)
+    .order("created_at", { ascending: false })
+    .limit(50);
+
+  if (error) {
+    console.warn("[reviews] query failed (table may not exist yet):", error.message);
+    return res.json({ data: [] });
+  }
+  res.json({ data });
+});
+
+app.post("/api/products/:id/reviews", requireUser, async (req, res) => {
+  const userClient = createAuthedClient(req.accessToken);
+  const { rating, body } = req.body || {};
+
+  if (!rating || rating < 1 || rating > 5) {
+    return res.status(400).json({ error: "Rating must be between 1 and 5." });
+  }
+
+  const { data, error } = await userClient
+    .from("reviews")
+    .insert({
+      user_id: req.user.id,
+      product_id: req.params.id,
+      rating: Number(rating),
+      body: body || null
+    })
+    .select("id, rating, body, created_at")
+    .single();
+
+  if (error) return res.status(error.code === "42P01" ? 503 : 500).json({ error: error.message || "Failed to submit review." });
+  res.status(201).json({ data });
+});
+
+// ── Products (Admin) ─────────────────────────────────────────────────────────
 
 app.post("/api/products", requireUser, requireAdmin, async (req, res) => {
   const userClient = createAuthedClient(req.accessToken);

@@ -1,77 +1,92 @@
-/* -------------------------------------------------------------
- * ROUTER.JS — Client-Side Hash Router (SPA Page Navigator)
- * ------------------------------------------------------------- */
+/* router.js — Client-Side Hash Router (SPA Page Navigator) */
 
 document.addEventListener("DOMContentLoaded", () => {
   const views = document.querySelectorAll(".spa-view");
   const navLinks = document.querySelectorAll(".nav-link");
 
-  // Force website to always open on the home landing page upon fresh reload/restart
+  const HOME_SECTIONS = ["#home", "#story", "#order", "#gallery", "#overview"];
+
+  // Force website to always open on the home landing page upon fresh reload
   if (window.location.hash) {
-    const homeSections = ["#home", "#story", "#order", "#gallery", "#overview"];
-    const isHomeSub = homeSections.some(sec => window.location.hash.startsWith(sec));
-    // If the hash is an inner category subpage, reset the URL state to the homepage
+    const isHomeSub = HOME_SECTIONS.some(sec => window.location.hash.startsWith(sec));
     if (!isHomeSub) {
       window.history.replaceState("", document.title, window.location.pathname + window.location.search);
     }
   }
 
-  const navigateTo = () => {
-    let hash = window.location.hash || "#home";
-    
-    // Check if the hash is a nested section of the home page
-    const homeSections = ["#home", "#story", "#order", "#gallery", "#overview"];
-    const isHomeSection = homeSections.some(sec => hash.startsWith(sec));
+  const hashToViewId = (hash) => {
+    if (!hash || HOME_SECTIONS.some(s => hash.startsWith(s))) return "view-home";
+    const map = {
+      "#perfumes":       "view-perfumes",
+      "#clothes":        "view-clothes",
+      "#shoes":          "view-shoes",
+      "#cart":           "view-cart",
+      "#checkout":       "view-checkout",
+      "#order-confirm":  "view-order-confirm",
+      "#login":          "view-login",
+      "#register":       "view-register",
+      "#forgot-password":"view-forgot-password",
+      "#account":        "view-account",
+      "#wishlist":       "view-wishlist",
+      "#search":         "view-search",
+      "#men":            "view-men",
+      "#women":          "view-women",
+    };
+    return map[hash] || "view-home";
+  };
 
-    let activeViewId = "view-home";
-    if (!isHomeSection) {
-      if (hash === "#perfumes") activeViewId = "view-perfumes";
-      else if (hash === "#clothes") activeViewId = "view-clothes";
-      else if (hash === "#shoes") activeViewId = "view-shoes";
+  const navigateTo = async () => {
+    const hash = window.location.hash || "#home";
+    const isHomeSection = HOME_SECTIONS.some(sec => hash.startsWith(sec));
+    const activeViewId = hashToViewId(hash);
+
+    // Auth guard for account page
+    if (hash === "#account") {
+      try {
+        const { data } = await window.supabaseClient.auth.getSession();
+        if (!data?.session) {
+          window.location.hash = "#login";
+          return;
+        }
+      } catch (err) {
+        console.error("[router] session check failed:", err);
+        window.location.hash = "#login";
+        return;
+      }
     }
 
-    // Toggle view containers visibility
+    // Toggle view visibility
     views.forEach(view => {
-      if (view.id === activeViewId) {
-        view.style.display = "block";
-        view.classList.add("active-view");
-      } else {
-        view.style.display = "none";
-        view.classList.remove("active-view");
-      }
+      const isActive = view.id === activeViewId;
+      view.style.display = isActive ? "block" : "none";
+      view.classList.toggle("active-view", isActive);
     });
 
-    // Update Nav Menu Highlights
+    // Update nav highlights
     navLinks.forEach(link => {
       link.classList.remove("active");
       const href = link.getAttribute("href");
-      
-      if (isHomeSection && href === "#home") {
-        link.classList.add("active");
-      } else if (!isHomeSection && href === hash) {
-        link.classList.add("active");
-      }
+      if (isHomeSection && href === "#home") link.classList.add("active");
+      else if (!isHomeSection && href === hash) link.classList.add("active");
     });
 
-    // Scroll Management
+    // Scroll management
     if (isHomeSection) {
-      // If navigating to a sub-anchor, wait a split-second for views toggles to finish, then scroll smoothly
-      const targetId = hash.substring(1);
-      const targetEl = document.getElementById(targetId);
-      if (targetEl) {
-        setTimeout(() => {
-          targetEl.scrollIntoView({ behavior: "smooth" });
-        }, 80);
-      }
+      const targetEl = document.getElementById(hash.substring(1));
+      if (targetEl) setTimeout(() => targetEl.scrollIntoView({ behavior: "smooth" }), 80);
     } else {
-      // Reset viewport scroll to top for new pages
       window.scrollTo(0, 0);
     }
+
+    // Page-specific triggers
+    if (hash === "#cart")    window.cart?.renderCartPage();
+    if (hash === "#account") window.accountPage?.load();
+    if (hash === "#wishlist") window.wishlist?.renderPage();
+    if (hash === "#search")  { window.searchPage?.focus(); }
+    if (hash === "#men")     window.categoryPage?.render("men-products-container",   "male");
+    if (hash === "#women")   window.categoryPage?.render("women-products-container", "female");
   };
 
-  // Bind to URL hash changes
   window.addEventListener("hashchange", navigateTo);
-  
-  // Initial Page Load Dispatch
   navigateTo();
 });

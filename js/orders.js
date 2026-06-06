@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // To bypass this cleanly without massive refactor, we can extract them from the DOM
   // when the order button is clicked.
   
+  if (!dbOrderBtn || !orderModal || !orderCloseBtn || !orderForm || !orderSubmitBtn) return;
+
   dbOrderBtn.addEventListener('click', async () => {
     const { data: { session } } = await window.supabaseClient.auth.getSession();
     const dict = translations[currentLang];
