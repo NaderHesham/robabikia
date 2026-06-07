@@ -59,8 +59,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Home overview page references
   const homePerfumesGrid = document.getElementById("overview-perfumes-grid");
+  const overviewPerfumeShowcase = document.getElementById("overview-perfume-showcase");
+  const overviewPerfumeBottlesContainer = document.getElementById("overview-perfume-bottles-container");
+  const overviewPerfumeProductInfo = document.getElementById("overview-perfume-product-info");
+  const overviewPerfumeProductName = document.getElementById("overview-perfume-product-name");
+  const overviewPerfumeProductSubtitle = document.getElementById("overview-perfume-product-subtitle");
+  const overviewPerfumeProductNotes = document.getElementById("overview-perfume-product-notes");
+  const overviewPerfumeNavDots = document.getElementById("overview-perfume-nav-dots");
+  const overviewPerfumePrevBtn = document.getElementById("overview-perfume-prev-btn");
+  const overviewPerfumeNextBtn = document.getElementById("overview-perfume-next-btn");
+  const overviewPerfumeDiscoverBtn = document.getElementById("overview-perfume-discover-btn");
+  const overviewPerfumeParticlesCanvas = document.getElementById("overview-perfume-particles-canvas");
   const homeClothesGrid = document.getElementById("overview-clothes-grid");
   const homeShoesGrid = document.getElementById("overview-shoes-grid");
+  const perfumeShowcase = document.getElementById("perfume-showcase");
+  const perfumeBottlesContainer = document.getElementById("perfume-bottles-container");
+  const perfumeProductInfo = document.getElementById("perfume-product-info");
+  const perfumeProductName = document.getElementById("perfume-product-name");
+  const perfumeProductSubtitle = document.getElementById("perfume-product-subtitle");
+  const perfumeProductNotes = document.getElementById("perfume-product-notes");
+  const perfumeNavDots = document.getElementById("perfume-nav-dots");
+  const perfumePrevBtn = document.getElementById("perfume-prev-btn");
+  const perfumeNextBtn = document.getElementById("perfume-next-btn");
+  const perfumeDiscoverBtn = document.getElementById("perfume-discover-btn");
+  const perfumeParticlesCanvas = document.getElementById("perfume-particles-canvas");
 
   // Sub-filter DOM reference
   const subFilterWrapper = document.getElementById("perfume-subfilters");
@@ -71,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Modal DOM references
   const modal = document.getElementById("product-modal");
   const modalClose = document.getElementById("modal-close");
+  const modalImgContainer = modal ? modal.querySelector(".modal-img-container") : null;
   const mImg = document.getElementById("modal-perfume-img");
   const mGlow = document.getElementById("modal-glow-bg");
   const mCollection = document.getElementById("modal-perfume-collection");
@@ -94,6 +117,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let activeShoesGender = null;
   let activeProductId = null;
   let selectedSize = null;
+  let showcaseCurrent = 1;
+  let showcaseTransitioning = false;
+  let showcaseTimer = null;
+  let showcaseParticles = [];
+  let overviewShowcaseCurrent = 1;
+  let overviewShowcaseTransitioning = false;
+  let overviewShowcaseTimer = null;
+  let overviewShowcaseParticles = [];
 
   // Custom builder states
   let builderTop = "فل بلدي (Jasmine)";
@@ -102,15 +133,71 @@ document.addEventListener("DOMContentLoaded", () => {
   let builderVolume = "50ml";
 
   // --- HTML Rendering templates ---
+  const getPerfumeSceneVariant = (imagePath = "", productId = "") => {
+    const source = `${imagePath} ${productId}`.toLowerCase();
+    if (source.includes("jasmine") || source.includes("etoilee") || source.includes("فل")) return "jasmine";
+    if (source.includes("nostalgia") || source.includes("rouge") || source.includes("نوستالج")) return "nostalgia";
+    return "oud";
+  };
+
+  const getPerfumeSceneHTML = (product, data, options = {}) => {
+    const {
+      compact = false,
+      showMeta = true,
+      sceneClass = ""
+    } = options;
+
+    const variant = getPerfumeSceneVariant(product.image, product.id);
+    const kickerMap = {
+      oud: "Luxury Scent Film",
+      jasmine: "Floral Scent Film",
+      nostalgia: "Vintage Scent Film"
+    };
+
+    return `
+      <div class="cinematic-scene scene--${variant} ${compact ? "cinematic-scene--compact" : ""} ${sceneClass}" data-scene="${variant}">
+        <div class="cinematic-scene__frame"></div>
+        <div class="cinematic-scene__glow"></div>
+        <div class="cinematic-scene__mist cinematic-scene__mist--1"></div>
+        <div class="cinematic-scene__mist cinematic-scene__mist--2"></div>
+        <div class="cinematic-scene__mist cinematic-scene__mist--3"></div>
+        <div class="cinematic-scene__base">
+          <img src="${product.image}" alt="${data.name}" class="cinematic-scene__image">
+        </div>
+        <div class="cinematic-scene__smoke">
+          <span class="smoke-wisp smoke-wisp--1"></span>
+          <span class="smoke-wisp smoke-wisp--2"></span>
+          <span class="smoke-wisp smoke-wisp--3"></span>
+          <span class="smoke-wisp smoke-wisp--4"></span>
+        </div>
+        <div class="cinematic-scene__bottle-wrap">
+          <div class="cinematic-scene__bottle">
+            <img src="${product.image}" alt="${data.name}" class="cinematic-scene__image">
+            <span class="cinematic-scene__highlight"></span>
+          </div>
+        </div>
+        <div class="cinematic-scene__vignette"></div>
+        ${showMeta ? `
+        <div class="cinematic-scene__meta">
+          <span class="scene-kicker">${kickerMap[variant]}</span>
+          <strong class="scene-title">${data.name}</strong>
+          <span class="scene-copy">${data.collection}</span>
+        </div>` : ""}
+      </div>
+    `;
+  };
   
   // Template: Scent Card Layout (3 columns)
   const getCardHTML = (product, lang, discoverText) => {
     const data = product[lang];
     const notesSummary = product.category === "perfumes" ? data.specLeftVal : "";
+    const visualHTML = product.category === "perfumes"
+      ? getPerfumeSceneHTML(product, data, { compact: true, showMeta: false, sceneClass: "product-perfume-scene" })
+      : `<img src="${product.image}" alt="${data.name}" class="product-img">`;
     return `
       <div class="product-card" id="card-${product.id}" style="--accent-glow: ${product.accentGlow};">
         <div class="product-img-wrapper">
-          <img src="${product.image}" alt="${data.name}" class="product-img">
+          ${visualHTML}
         </div>
         <div class="product-info">
           <span class="product-collection">${data.collection}</span>
@@ -246,6 +333,212 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
   };
 
+  const getShowcaseSlotProps = (index, current, total) => {
+    const diff = ((index - current) % total + total) % total;
+    const pos = diff > total / 2 ? diff - total : diff;
+
+    if (pos === 0) {
+      return { x: "50%", translateX: "-50%", scale: 1, zIndex: 10, size: 260, slot: "active" };
+    } else if (pos === 1 || pos === -1) {
+      const side = pos === 1 ? 1 : -1;
+      return {
+        x: `calc(50% + ${side * 160}px)`,
+        translateX: "-50%",
+        scale: 0.7,
+        zIndex: 5,
+        size: 200,
+        slot: "side"
+      };
+    }
+
+    return {
+      x: `calc(50% + ${pos > 0 ? 320 : -320}px)`,
+      translateX: "-50%",
+      scale: 0.4,
+      zIndex: 1,
+      size: 160,
+      slot: "far"
+    };
+  };
+
+  const initShowcaseParticles = (canvasNode, particleStore) => {
+    if (!canvasNode || canvasNode.dataset.bound === "true") return;
+    const ctx = canvasNode.getContext("2d");
+    if (!ctx) return;
+
+    const resize = () => {
+      canvasNode.width = canvasNode.clientWidth;
+      canvasNode.height = canvasNode.clientHeight;
+    };
+
+    class Particle {
+      constructor() { this.reset(); }
+      reset() {
+        this.x = Math.random() * canvasNode.width;
+        this.y = canvasNode.height + 20;
+        this.size = Math.random() * 2 + 0.5;
+        this.speedY = Math.random() * 0.6 + 0.2;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.opacity = Math.random() * 0.5 + 0.1;
+        this.life = 0;
+        this.maxLife = Math.random() * 200 + 100;
+        this.gold = Math.random() > 0.5;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y -= this.speedY;
+        this.life++;
+        if (this.life > this.maxLife) this.reset();
+      }
+      draw() {
+        const progress = this.life / this.maxLife;
+        const alpha = this.opacity * Math.sin(progress * Math.PI);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.gold
+          ? `rgba(201,169,110,${alpha})`
+          : `rgba(255,240,200,${alpha * 0.6})`;
+        ctx.fill();
+      }
+    }
+
+    const refill = () => {
+      particleStore.length = 0;
+      for (let i = 0; i < 80; i++) {
+        const particle = new Particle();
+        particle.life = Math.floor(Math.random() * particle.maxLife);
+        particleStore.push(particle);
+      }
+    };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvasNode.width, canvasNode.height);
+      particleStore.forEach((particle) => {
+        particle.update();
+        particle.draw();
+      });
+      requestAnimationFrame(animate);
+    };
+
+    resize();
+    refill();
+    animate();
+    window.addEventListener("resize", () => {
+      resize();
+      refill();
+    });
+    canvasNode.dataset.bound = "true";
+  };
+
+  const renderPerfumeShowcase = (perfumes, lang, refs, state) => {
+    if (!refs.root || !refs.bottlesContainer || perfumes.length === 0) return;
+
+    const showcaseItems = perfumes.slice(0, 3);
+    if (state.current >= showcaseItems.length) state.current = 0;
+
+    const updateInfo = () => {
+      refs.productInfo?.classList.remove("visible");
+      setTimeout(() => {
+        const product = showcaseItems[state.current];
+        const data = product[lang];
+        if (refs.productName) refs.productName.textContent = data.name;
+        if (refs.productSubtitle) refs.productSubtitle.textContent = data.collection;
+        if (refs.productNotes) refs.productNotes.textContent = data.specLeftVal;
+        refs.productInfo?.classList.add("visible");
+      }, 300);
+    };
+
+    const goTo = (index) => {
+      if (state.transitioning || index === state.current) return;
+      state.transitioning = true;
+      state.current = index;
+      updateSlots();
+      setTimeout(() => { state.transitioning = false; }, 900);
+    };
+
+    const buildDots = () => {
+      if (!refs.navDots) return;
+      refs.navDots.innerHTML = "";
+      showcaseItems.forEach((_, index) => {
+        const dot = document.createElement("div");
+        dot.className = `dot${index === state.current ? " active" : ""}`;
+        dot.addEventListener("click", () => goTo(index));
+        refs.navDots.appendChild(dot);
+      });
+    };
+
+    const buildSlots = () => {
+      refs.bottlesContainer.innerHTML = "";
+      showcaseItems.forEach((product, index) => {
+        const props = getShowcaseSlotProps(index, state.current, showcaseItems.length);
+        const slot = document.createElement("div");
+        slot.className = `bottle-slot ${props.slot}`;
+        slot.id = `${refs.prefix}-slot-${index}`;
+        slot.style.left = props.x;
+        slot.style.transform = `translateX(${props.translateX}) scale(${props.scale})`;
+        slot.style.zIndex = props.zIndex;
+
+        const glow = document.createElement("div");
+        glow.className = "glow-ring";
+
+        const img = document.createElement("img");
+        img.src = product.image;
+        img.alt = product[lang].name;
+        img.style.width = `${props.size}px`;
+        img.style.height = "400px";
+
+        slot.appendChild(glow);
+        slot.appendChild(img);
+        slot.addEventListener("click", () => {
+          if (!state.transitioning) goTo(index);
+        });
+        refs.bottlesContainer.appendChild(slot);
+      });
+      buildDots();
+      updateInfo();
+    };
+
+    const updateSlots = () => {
+      showcaseItems.forEach((product, index) => {
+        const slot = document.getElementById(`${refs.prefix}-slot-${index}`);
+        if (!slot) return;
+        const props = getShowcaseSlotProps(index, state.current, showcaseItems.length);
+        slot.style.left = props.x;
+        slot.style.transform = `translateX(${props.translateX}) scale(${props.scale})`;
+        slot.style.zIndex = props.zIndex;
+        slot.className = `bottle-slot ${props.slot}`;
+        const img = slot.querySelector("img");
+        if (img) img.style.width = `${props.size}px`;
+      });
+      buildDots();
+      updateInfo();
+    };
+
+    buildSlots();
+    refs.prevBtn && (refs.prevBtn.onclick = () => {
+      if (state.timer) clearInterval(state.timer);
+      goTo((state.current - 1 + showcaseItems.length) % showcaseItems.length);
+    });
+    refs.nextBtn && (refs.nextBtn.onclick = () => {
+      if (state.timer) clearInterval(state.timer);
+      goTo((state.current + 1) % showcaseItems.length);
+    });
+    refs.discoverBtn && (refs.discoverBtn.onclick = () => {
+      const currentProduct = showcaseItems[state.current];
+      if (currentProduct) openProductModal(currentProduct.id);
+    });
+
+    if (state.timer) clearInterval(state.timer);
+    state.timer = setInterval(() => {
+      if (!state.transitioning) {
+        goTo((state.current + 1) % showcaseItems.length);
+      }
+    }, 4000);
+
+    initShowcaseParticles(refs.canvas, state.particles);
+    setTimeout(() => refs.productInfo?.classList.add("visible"), 800);
+  };
+
   // Render Layouts based on active language and filters
   const renderCatalog = (lang) => {
     const discoverText = translations[lang]["scents-discover-btn"];
@@ -298,7 +591,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 3. Render Home Overview Previews (Home View)
-    if (homePerfumesGrid) {
+    if (homePerfumesGrid && !overviewPerfumeShowcase) {
       homePerfumesGrid.innerHTML = perfumes.slice(0, 3).map(p => getCardHTML(p, lang, discoverText)).join("");
     }
     if (homeClothesGrid) {
@@ -307,6 +600,54 @@ document.addEventListener("DOMContentLoaded", () => {
     if (homeShoesGrid) {
       homeShoesGrid.innerHTML = shoes.slice(0, 2).map(s => getLookbookHTML(s, lang, discoverText)).join("");
     }
+
+    renderPerfumeShowcase(perfumes, lang, {
+      root: perfumeShowcase,
+      bottlesContainer: perfumeBottlesContainer,
+      productInfo: perfumeProductInfo,
+      productName: perfumeProductName,
+      productSubtitle: perfumeProductSubtitle,
+      productNotes: perfumeProductNotes,
+      navDots: perfumeNavDots,
+      prevBtn: perfumePrevBtn,
+      nextBtn: perfumeNextBtn,
+      discoverBtn: perfumeDiscoverBtn,
+      canvas: perfumeParticlesCanvas,
+      prefix: "perfume-main"
+    }, {
+      get current() { return showcaseCurrent; },
+      set current(value) { showcaseCurrent = value; },
+      get transitioning() { return showcaseTransitioning; },
+      set transitioning(value) { showcaseTransitioning = value; },
+      get timer() { return showcaseTimer; },
+      set timer(value) { showcaseTimer = value; },
+      particles: showcaseParticles
+    });
+
+    renderPerfumeShowcase(perfumes, lang, {
+      root: overviewPerfumeShowcase,
+      bottlesContainer: overviewPerfumeBottlesContainer,
+      productInfo: overviewPerfumeProductInfo,
+      productName: overviewPerfumeProductName,
+      productSubtitle: overviewPerfumeProductSubtitle,
+      productNotes: overviewPerfumeProductNotes,
+      navDots: overviewPerfumeNavDots,
+      prevBtn: overviewPerfumePrevBtn,
+      nextBtn: overviewPerfumeNextBtn,
+      discoverBtn: overviewPerfumeDiscoverBtn,
+      canvas: overviewPerfumeParticlesCanvas,
+      prefix: "perfume-overview"
+    }, {
+      get current() { return overviewShowcaseCurrent; },
+      set current(value) { overviewShowcaseCurrent = value; },
+      get transitioning() { return overviewShowcaseTransitioning; },
+      set transitioning(value) { overviewShowcaseTransitioning = value; },
+      get timer() { return overviewShowcaseTimer; },
+      set timer(value) { overviewShowcaseTimer = value; },
+      particles: overviewShowcaseParticles
+    });
+
+    window.initCinematicScenes?.(document);
   };
 
   // Bind builder select menus and buttons selectors listeners
@@ -390,19 +731,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!product) return;
     const data = product[lang];
 
-    mImg.src = product.image;
-    mImg.alt = data.name;
     mCollection.textContent = data.collection;
     mName.textContent = data.name;
     mPrice.textContent = data.price;
     mDesc.textContent = data.desc;
     mSpecLeftVal.textContent = data.specLeftVal;
     mSpecRightVal.textContent = data.specRightVal;
-
-    mGlow.style.setProperty("--accent-glow", product.accentGlow);
     modal.querySelector(".product-modal").style.borderColor = product.accentColor;
 
     if (product.category === "perfumes") {
+      if (modalImgContainer) {
+        modalImgContainer.innerHTML = `
+          ${getPerfumeSceneHTML(product, data, { compact: false, showMeta: false, sceneClass: "modal-perfume-scene" })}
+          <div class="modal-glow-bg" id="modal-glow-bg"></div>
+        `;
+      }
       mSpecLeftTitle.textContent = translations[lang]["modal-top-notes-title"];
       mSpecRightTitle.textContent = translations[lang]["modal-base-notes-title"];
       mMoodWrapper.style.display = "block";
@@ -410,6 +753,12 @@ document.addEventListener("DOMContentLoaded", () => {
       mSizeWrapper.style.display = "none";
       selectedSize = null;
     } else {
+      if (modalImgContainer) {
+        modalImgContainer.innerHTML = `
+          <img src="${product.image}" id="modal-perfume-img" alt="${data.name}">
+          <div class="modal-glow-bg" id="modal-glow-bg"></div>
+        `;
+      }
       mSpecLeftTitle.textContent = translations[lang]["modal-spec-left"];
       mSpecRightTitle.textContent = translations[lang]["modal-spec-right"];
       mMoodWrapper.style.display = "none";
@@ -421,6 +770,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return `<button class="size-btn ${activeClass}" data-size="${size}">${size}</button>`;
       }).join("");
     }
+
+    const currentGlow = modal ? modal.querySelector("#modal-glow-bg") : null;
+    currentGlow?.style.setProperty("--accent-glow", product.accentGlow);
+    window.initCinematicScenes?.(modalImgContainer || modal);
 
     updateWhatsAppLink();
   };

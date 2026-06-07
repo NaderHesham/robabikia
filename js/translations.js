@@ -31,6 +31,7 @@ const translations = {
     "hero-desc": "توليفة ساحرة تجمع عبق التراث والأناقة الكلاسيكية مع خطوط الموضة المعاصرة والفخامة الحديثة.",
     "hero-cta-discover": "اكتشف مجموعتنا",
     "hero-cta-story": "حكايتنا",
+    "hero-cta-cinematic": "شاهد الإعلان السينمائي",
     "hero-scroll": "اسحب لأسفل",
 
     // Featured Collections / Catalog Section
@@ -191,6 +192,7 @@ const translations = {
     "hero-desc": "A magical blend that combines the elegance of classic heritage with contemporary silhouettes and modern sophistication.",
     "hero-cta-discover": "Discover Our Collection",
     "hero-cta-story": "Our Story",
+    "hero-cta-cinematic": "Watch Cinematic Ad",
     "hero-scroll": "Scroll Down",
 
     // Featured Collections / Catalog Section
