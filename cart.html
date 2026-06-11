@@ -129,5 +129,13 @@
     <span class="store-toast__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     <span class="store-toast__msg" id="toast-msg"></span>
   </div>
+  <script>(function(){var lang=localStorage.getItem("tibr-lang");if(lang!=="en")return;
+var els,i;
+els=document.querySelectorAll("[data-ar-label]");for(i=0;i<els.length;i++){els[i].setAttribute("aria-label",els[i].getAttribute("data-en-label"))}
+els=document.querySelectorAll("[data-ar-alt]");for(i=0;i<els.length;i++){els[i].setAttribute("alt",els[i].getAttribute("data-en-alt"))}
+els=document.querySelectorAll("[data-ar-ph]");for(i=0;i<els.length;i++){els[i].setAttribute("placeholder",els[i].getAttribute("data-en-ph"))}
+els=document.querySelectorAll("select[data-ar]");for(i=0;i<els.length;i++){var sel=els[i],lbs;try{lbs=JSON.parse(sel.getAttribute("data-en"))}catch(x){}if(!lbs)continue;for(var j=0;j<sel.options.length;j++){if(lbs[j]!=null)sel.options[j].textContent=lbs[j]}}
+var b=document.body;if(b.dataset.titleAr&&b.dataset.titleEn)document.title=b.dataset.titleEn;
+})();</script>
 </body>
 </html>
