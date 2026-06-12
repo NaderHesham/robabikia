@@ -1,6 +1,7 @@
 const path = require("path");
 const { randomUUID } = require("crypto");
 const express = require("express");
+const compression = require("compression");
 const dotenv = require("dotenv");
 const ws = require("ws");
 const { createClient } = require("@supabase/supabase-js");
@@ -30,6 +31,11 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     transport: ws
   }
 });
+
+app.use(compression());
+
+const CACHE_DURATION = 365 * 24 * 60 * 60; // 1 year
+const CACHE_IMMUTABLE = `public, max-age=${CACHE_DURATION}, immutable`;
 
 app.use(express.json());
 
@@ -648,7 +654,17 @@ app.post("/api/products", requireUser, requireAdmin, async (req, res) => {
   res.status(201).json({ data: normalizeProduct(data) });
 });
 
-app.use(express.static(rootDir, { extensions: ["html"] }));
+const staticOpts = { extensions: ["html"], setHeaders: (res, filePath) => {
+  const ext = path.extname(filePath);
+  if (/\.(css|js|mjs)$/i.test(ext)) {
+    res.setHeader("Cache-Control", CACHE_IMMUTABLE);
+  } else if (/\.(png|jpg|jpeg|gif|ico|svg|webp|avif|glb)$/i.test(ext)) {
+    res.setHeader("Cache-Control", `public, max-age=${CACHE_DURATION}`);
+  } else if (/\.(woff2?|ttf|otf|eot)$/i.test(ext)) {
+    res.setHeader("Cache-Control", CACHE_IMMUTABLE);
+  }
+}};
+app.use(express.static(rootDir, staticOpts));
 
 app.get("*", (req, res, next) => {
   if (req.path.startsWith("/api/")) {

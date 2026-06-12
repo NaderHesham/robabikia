@@ -92,7 +92,7 @@
           <a class="store-iconbtn" href="/cart" id="cart-btn" data-ar-label="سلة التسوق" data-en-label="Cart" aria-label="سلة التسوق">
             ${I.bag}<span class="store-cart-count" id="cart-count" aria-hidden="true">0</span>
           </a>
-          <button class="store-lang" id="lang-switch" type="button" aria-label="Switch language">${I.globe}<span class="lang-text">EN</span></button>
+          <button class="store-lang" id="lang-switch" type="button" aria-label="Switch language">${I.globe}<span class="lang-text">${bi("EN","العربية")}</span></button>
           <button class="store-burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" data-ar-label="القائمة" data-en-label="Menu" aria-label="القائمة">${I.menu}</button>
         </div>
       </div>
@@ -197,8 +197,8 @@
       Array.from(sel.options).forEach((o, i) => { if (labels[i] != null) o.textContent = labels[i]; });
     });
 
-    const langText = $(".lang-text");
-    if (langText) langText.textContent = lang === "ar" ? "EN" : "العربية";
+    const ac = document.getElementById("attr-cloak");
+    if (ac) ac.parentNode.removeChild(ac);
 
     document.dispatchEvent(new CustomEvent("languageChanged", { detail: { lang } }));
   }
@@ -305,6 +305,34 @@
   var _cloak = document.getElementById("lang-cloak");
   if (_cloak) _cloak.parentNode.removeChild(_cloak);
   requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.remove("no-transitions")));
+
+  // Observe future DOM additions for bilingual attributes (aria-label, alt, placeholder, select text).
+  // Runs AFTER applyLang handled the initial DOM, so only dynamic insertions are processed.
+  new MutationObserver(function (mutations) {
+    const lang = document.documentElement.lang;
+    for (const mut of mutations) {
+      for (const node of mut.addedNodes) {
+        if (node.nodeType !== 1) continue;
+        const targets = node.querySelectorAll
+          ? [node, ...node.querySelectorAll("[data-ar-label],[data-ar-alt],[data-ar-ph],select[data-ar]")]
+          : [node];
+        for (const el of targets) {
+          if (el.hasAttribute && el.hasAttribute("data-ar-label"))
+            el.setAttribute("aria-label", el.getAttribute("data-" + lang + "-label"));
+          if (el.hasAttribute && el.hasAttribute("data-ar-alt"))
+            el.setAttribute("alt", el.getAttribute("data-" + lang + "-alt"));
+          if (el.hasAttribute && el.hasAttribute("data-ar-ph"))
+            el.setAttribute("placeholder", el.getAttribute("data-" + lang + "-ph"));
+          if (el.tagName === "SELECT" && el.hasAttribute("data-ar")) {
+            try {
+              const labels = JSON.parse(el.getAttribute("data-" + lang));
+              Array.from(el.options).forEach((o, j) => { if (labels[j] != null) o.textContent = labels[j]; });
+            } catch (_) {}
+          }
+        }
+      }
+    }
+  }).observe(document.body, { childList: true, subtree: true });
   const langBtn = $("#lang-switch");
   if (langBtn) langBtn.addEventListener("click", toggleLang);
   wireHeader();

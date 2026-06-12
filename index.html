@@ -1,36 +1,36 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<script>(function(){var l=localStorage.getItem("tibr-lang")||"ar";document.documentElement.lang=l;document.documentElement.dir=l==="ar"?"rtl":"ltr";if(l!=="ar")document.documentElement.style.visibility="hidden";})();</script>
+  <!-- Language boot: prevent flash of wrong language -->
+  <script>(function(){var l=localStorage.getItem("tibr-lang")||"ar";document.documentElement.lang=l;document.documentElement.dir=l==="ar"?"rtl":"ltr";if(l!=="ar")document.documentElement.style.visibility="hidden";})();</script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="تِبْر — عطور مصرية فاخرة وأزياء وأحذية من خامات طبيعية نقية. الأصل قبل كل شيء.">
-  <meta name="keywords" content="عطور, ملابس, أحذية, أزياء كلاسيكية, أزياء معاصرة, الكتان, عطور فاخرة">
+  <meta name="keywords" content="عطور, ملابس, أحذية, تِبْر, عطور فاخرة, مصر">
   <meta name="author" content="Tibr">
 
-  <title data-i18n="doc-title">تِبْر — الأصل قبل كل شيء 🌸 عطور وأزياء وأحذية مصرية فاخرة</title>
+  <title>تِبْر — الأصل قبل كل شيء</title>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: store type system + Reem Kufi for brand wordmark -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&family=Rakkas&display=swap" rel="stylesheet">
-  
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/base/reset.css?v=1.2">
-  <link rel="stylesheet" href="css/base/variables.css?v=1.3">
-  <link rel="stylesheet" href="css/base/animations.css?v=1.3">
-  <link rel="stylesheet" href="css/layout/hero.css?v=1.4">
-  <!-- products.css + shop.css are kept: they style the preserved 3D experience
-       and its catalog reveal (do not remove with the old shop). -->
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Hanken+Grotesk:wght@400;500;600&family=Reem+Kufi:wght@400;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Design tokens (OKLCH dark boutique) -->
+  <link rel="stylesheet" href="css/store/tokens.css">
+  <!-- Landing styles -->
+  <link rel="stylesheet" href="css/landing/landing.css">
+
+  <!-- 3D experience CSS — kept for the dormant 3D shell (do not remove) -->
   <link rel="stylesheet" href="css/components/products.css?v=1.8">
   <link rel="stylesheet" href="css/components/shop.css?v=1.1">
-  <link rel="stylesheet" href="css/layout/story.css?v=1.3">
-  <link rel="stylesheet" href="css/layout/footer.css?v=1.3">
   <link rel="stylesheet" href="css/layout/utils.css?v=1.1">
   <link rel="stylesheet" href="css/components/3d-experience.css?v=1.5">
 </head>
 <body>
 
+  <!-- SVG clip paths for the 3D experience bottles (kept dormant) -->
   <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
     <defs>
       <clipPath id="clip-bottle-oud" clipPathUnits="objectBoundingBox">
@@ -45,139 +45,56 @@
     </defs>
   </svg>
 
-
-  <!-- Custom Bottle SVG Cursor -->
-  <div class="custom-cursor" id="custom-cursor">
-    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M12 2C10.9 2 10 2.9 10 4V6H7C5.9 6 5 6.9 5 8V20C5 21.1 5.9 22 7 22H17C18.1 22 19 21.1 19 20V8C19 6.9 18.1 6 17 6H14V4C14 2.9 13.1 2 12 2Z" stroke="#C9A84C" stroke-width="2" stroke-linejoin="round"/>
-      <path d="M5 10H19" stroke="#C9A84C" stroke-width="2"/>
-      <circle cx="12" cy="15" r="2" fill="#C9A84C"/>
-    </svg>
-  </div>
-
-  <!-- ==========================================
-       1. INTRO ANIMATION CURTAIN
-       ========================================== -->
-  <div class="intro-curtain" id="intro-curtain">
-    <button class="skip-btn" id="skip-btn" data-i18n="intro-skip">تخطي</button>
-
-    <!-- Atmospheric layers (back to front) -->
-    <div class="intro-arabesque" aria-hidden="true"></div>
-    <div class="intro-bg-glow" aria-hidden="true"></div>
-    <div class="intro-bokeh-layer" id="intro-bokeh-layer" aria-hidden="true"></div>
-
-    <!-- Portal glow ring — blooms then fades before logo arrives -->
-    <div class="intro-glow-ring" id="intro-glow-ring" aria-hidden="true"></div>
-
-    <div class="intro-content">
-
-      <svg class="intro-ornament intro-ornament-top" viewBox="0 0 400 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path class="orn-path-left" d="M 193,10 L 20,10"/>
-        <polygon class="orn-diamond" points="200,4 207,10 200,16 193,10"/>
-        <path class="orn-path-right" d="M 207,10 L 380,10"/>
-        <g class="orn-accents" opacity="0">
-          <line x1="68" y1="7" x2="68" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="120" y1="7" x2="120" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="166" y1="7" x2="166" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="234" y1="7" x2="234" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="280" y1="7" x2="280" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="332" y1="7" x2="332" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-        </g>
-      </svg>
-
-      <div class="intro-logo-wrapper">
-        <div class="intro-logo-clip">
-          <h1 class="intro-logo-ar">تِبْر</h1>
-        </div>
-        <h2 class="intro-logo-en">TIBR</h2>
-      </div>
-
-      <svg class="intro-ornament intro-ornament-bottom" viewBox="0 0 400 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path class="orn-path-left" d="M 193,10 L 20,10"/>
-        <polygon class="orn-diamond" points="200,4 207,10 200,16 193,10"/>
-        <path class="orn-path-right" d="M 207,10 L 380,10"/>
-        <g class="orn-accents" opacity="0">
-          <line x1="68" y1="7" x2="68" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="120" y1="7" x2="120" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="166" y1="7" x2="166" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="234" y1="7" x2="234" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="280" y1="7" x2="280" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-          <line x1="332" y1="7" x2="332" y2="13" stroke="#C9A84C" stroke-width="0.7" opacity="0.5"/>
-        </g>
-      </svg>
-
-      <p class="intro-tagline" data-i18n="intro-tagline">"روائح نايمة في الذاكرة، صحيت في قارورة."</p>
-    </div>
-
-    <!-- Warm amber flash that fires at exit -->
-    <div class="intro-exit-flash" id="intro-exit-flash" aria-hidden="true"></div>
-  </div>
-
-  <!-- ==========================================
-       3D EXPERIENCE SHELL (fixed overlay, hidden until #perfumes)
-       ========================================== -->
+  <!-- 3D Experience Shell — dormant (display:none), kept for future re-integration -->
   <div id="perfume-3d-shell" class="experience-3d" style="display:none">
     <div class="progress-track"><div id="progress-bar"></div></div>
-
     <div class="parallax-bg" id="parallax-bg">
       <div class="parallax-layer parallax-layer--gradient"></div>
       <div class="parallax-layer parallax-layer--particles"></div>
     </div>
-
-    <div class="canvas-wrapper">
-      <canvas id="three-canvas"></canvas>
-    </div>
-
+    <div class="canvas-wrapper"><canvas id="three-canvas"></canvas></div>
     <div class="vignette"></div>
-
     <div class="overlay">
       <div class="orbit-svg-wrapper" id="orbit-svg">
         <svg viewBox="-250 -250 500 500" class="orbit-svg" aria-hidden="true">
           <g id="orbit-svg-group"></g>
         </svg>
       </div>
-
       <div class="scene-text" id="scene-1">
-        <p class="scene-eyebrow" data-i18n="3d-scene1-eyebrow">تِبْر</p>
-        <h2 class="scene-title" data-i18n="3d-scene1-title">روائح تسكن الذاكرة</h2>
-        <p class="scene-desc" data-i18n="3d-scene1-desc">تشكيلة فاخرة مُقطَّرة من روح التراث المصري</p>
+        <p class="scene-eyebrow">تِبْر</p>
+        <h2 class="scene-title">روائح تسكن الذاكرة</h2>
+        <p class="scene-desc">تشكيلة فاخرة مُقطَّرة من روح التراث المصري</p>
       </div>
-
       <div class="scene-text scene-text--end" id="scene-2">
-        <p class="scene-eyebrow" data-i18n="3d-scene2-eyebrow">الحكاية</p>
-        <h2 class="scene-title" data-i18n="3d-scene2-title">في كل قطرة، ذاكرة</h2>
-        <p class="scene-desc" data-i18n="3d-scene2-desc">من حدائق القاهرة القديمة إلى أسواق التوابل العريقة — كل عطر يحمل قصة تتشرّب في الروح وتبقى في الذاكرة.</p>
+        <p class="scene-eyebrow">الحكاية</p>
+        <h2 class="scene-title">في كل قطرة، ذاكرة</h2>
+        <p class="scene-desc">من حدائق القاهرة القديمة إلى أسواق التوابل العريقة — كل عطر يحمل قصة تتشرّب في الروح وتبقى في الذاكرة.</p>
       </div>
-
       <div class="scene-text" id="scene-3">
-        <p class="scene-eyebrow" data-i18n="3d-scene3-eyebrow">تركيبة العطر</p>
-        <h2 class="scene-title" data-i18n="3d-scene3-title">اكتشف تشكيلتنا</h2>
+        <p class="scene-eyebrow">تركيبة العطر</p>
+        <h2 class="scene-title">اكتشف تشكيلتنا</h2>
         <ul class="scent-notes" id="scent-notes">
-          <li><span class="note-label" data-i18n="3d-note1-label">شرقية</span> <span data-i18n="3d-note1">العود الملكي · البخور · المسك</span></li>
-          <li><span class="note-label" data-i18n="3d-note2-label">زهرية</span> <span data-i18n="3d-note2">الياسمين · الورد الدمشقي · الفل</span></li>
+          <li><span class="note-label">شرقية</span> <span>العود الملكي · البخور · المسك</span></li>
+          <li><span class="note-label">زهرية</span> <span>الياسمين · الورد الدمشقي · الفل</span></li>
         </ul>
       </div>
-
       <div class="scene-text scene-text--end" id="scene-4">
-        <p class="scene-eyebrow" data-i18n="3d-scene4-eyebrow">اجعله لكَ</p>
-        <h2 class="scene-title" data-i18n="3d-scene4-title">عطرك — بصمتك الخالدة</h2>
+        <p class="scene-eyebrow">اجعله لكَ</p>
+        <h2 class="scene-title">عطرك — بصمتك الخالدة</h2>
         <div class="scene-cta">
-          <a href="#perfumes-catalog" class="btn-3d" id="cta-shop" data-i18n="3d-scene4-cta">اكتشف التشكيلة</a>
+          <a href="#perfumes-catalog" class="btn-3d" id="cta-shop">اكتشف التشكيلة</a>
         </div>
       </div>
     </div>
-
     <div class="scroll-hint" id="scroll-hint">
       <div class="scroll-hint__wheel"></div>
       <span>اسكرول</span>
     </div>
-
     <div class="loader-screen" id="loader-screen">
       <div class="loader-logo">تِبْر</div>
       <div class="loader-track"><div id="loader-fill"></div></div>
       <div class="loader-label">جارٍ تحميل التجربة</div>
     </div>
-
     <div class="experience-fallback">
       <h2 class="scene-title">المتصفح لا يدعم العرض ثلاثي الأبعاد</h2>
       <p class="scene-desc">يمكنك تصفّح المجموعة الكاملة من قسم العطور.</p>
@@ -190,303 +107,361 @@
   <div class="main-content" id="main-content">
 
     <!-- ==========================================
-         NAVBAR / HEADER
+         NAVIGATION
          ========================================== -->
-    <header class="navbar" id="navbar">
-      <div class="nav-container">
-        <!-- Logo -->
-        <a href="#home" class="nav-logo">
-          <span class="logo-text-ar">تِبْر</span>
-          <span class="logo-text-en">TIBR</span>
+    <header class="lp-nav" id="lp-nav">
+      <div class="lp-nav__inner">
+
+        <!-- Logo mark: always shows both scripts -->
+        <a href="#home" class="lp-nav__logo" aria-label="تِبْر — الرئيسية">
+          <span class="lp-nav__logo-ar">تِبْر</span>
+          <span class="lp-nav__logo-en">TIBR</span>
         </a>
 
-        <!-- Navigation Links -->
-        <nav class="nav-menu" id="nav-menu">
-          <ul>
-            <li><a href="#home" class="nav-link active" data-i18n="nav-home">الرئيسية</a></li>
-            <li><a href="#story" class="nav-link" data-i18n="nav-story">حكايتنا</a></li>
+        <!-- Desktop nav links -->
+        <nav aria-label="القائمة الرئيسية">
+          <ul class="lp-nav__links">
+            <li>
+              <a href="#home" class="lp-nav__link">
+                <span data-lang-ar>الرئيسية</span>
+                <span data-lang-en>Home</span>
+              </a>
+            </li>
+            <li>
+              <a href="#story" class="lp-nav__link">
+                <span data-lang-ar>حكايتنا</span>
+                <span data-lang-en>Our Story</span>
+              </a>
+            </li>
           </ul>
         </nav>
 
-        <!-- CTA Actions — storytelling landing: one store entry point only -->
-        <div class="nav-cta">
-
-          <!-- Shop Now — the single entry point into the store -->
-          <a href="/shop/perfumes" class="nav-shop-btn hover-vibrate">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
-              <line x1="3" y1="6" x2="21" y2="6"/>
-              <path d="M16 10a4 4 0 01-8 0"/>
-            </svg>
-            <span data-i18n="nav-shop">تسوّق الآن</span>
+        <!-- Actions -->
+        <div class="lp-nav__actions">
+          <a href="/shop/perfumes" class="lp-btn lp-btn--gold lp-nav__shop">
+            <span data-lang-ar>تسوّق الآن</span>
+            <span data-lang-en>Shop Now</span>
           </a>
-
-          <div class="nav-v-divider"></div>
-
-          <!-- Language Toggle -->
-
-          <button id="lang-switch" class="nav-lang-btn hover-vibrate" aria-label="Change Language">
+          <div class="lp-nav__divider" aria-hidden="true"></div>
+          <button id="lang-switch" class="lp-lang-btn" aria-label="تغيير اللغة / Change Language">
             <span class="lang-text">EN</span>
           </button>
-
-
+          <button class="lp-nav__burger" id="lp-burger" aria-label="فتح القائمة" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
         </div>
+      </div>
 
-        <!-- Burger Toggle (Mobile) -->
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle Navigation">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
+      <!-- Mobile drawer -->
+      <div class="lp-nav__drawer" id="lp-drawer" aria-hidden="true">
+        <a href="#home" class="lp-nav__drawer-link">
+          <span data-lang-ar>الرئيسية</span>
+          <span data-lang-en>Home</span>
+        </a>
+        <a href="#story" class="lp-nav__drawer-link">
+          <span data-lang-ar>حكايتنا</span>
+          <span data-lang-en>Our Story</span>
+        </a>
+        <div class="lp-nav__drawer-cta">
+          <a href="/shop/perfumes" class="lp-btn lp-btn--gold" style="display:block;text-align:center;">
+            <span data-lang-ar>تسوّق الآن</span>
+            <span data-lang-en>Shop Now</span>
+          </a>
+        </div>
       </div>
     </header>
 
     <!-- ==========================================
-         SPA VIEW: HOME (Overview)
+         SPA VIEW: HOME (Landing — redesigned)
          ========================================== -->
     <div id="view-home" class="spa-view active-view">
-      
-      <!-- HERO SECTION -->
-      <section class="hero-section" id="home">
-        <div class="hero-bg-wrapper">
-          <div class="hero-bg-overlay"></div>
-          <img src="assets/images/hero_bg.png" alt="تِبْر عطور شرقية عريقة" class="hero-bg-img">
+
+      <!-- HERO -->
+      <section class="lp-hero" id="home" aria-label="Hero">
+        <div class="lp-hero__bg" aria-hidden="true">
+          <img src="assets/images/hero_bg.webp"
+               alt=""
+               fetchpriority="high"
+               decoding="async">
+          <div class="lp-hero__overlay"></div>
         </div>
 
-        <div class="hero-content">
-          <span class="hero-subtitle" data-i18n="hero-subtitle">🌿 بيت العطور والأزياء الراقية 🌿</span>
-          <h1 class="hero-title">
-            <span class="hero-title-ar">تِـبْـر</span>
-            <span class="hero-title-en">TIBR</span>
-          </h1>
-          <p class="hero-tagline" data-i18n="hero-tagline">"أصالة الماضي، بفخامة معاصرة."</p>
-          <p class="hero-desc" data-i18n="hero-desc">توليفة ساحرة تجمع عبق التراث والأناقة الكلاسيكية مع خطوط الموضة المعاصرة والفخامة الحديثة.</p>
-          
-          <div class="hero-actions">
-            <a href="/shop/perfumes" class="btn btn-gold btn-glowing">
-              <span data-i18n="hero-cta-discover">اكتشف مجموعتنا</span>
-              <span class="btn-shine"></span>
+        <div class="lp-hero__content">
+          <div class="lp-hero__wordmark" aria-label="تِبْر">
+            <span class="lp-hero__name-ar" data-lang-ar aria-hidden="false">تِبْر</span>
+            <span class="lp-hero__name-ar" data-lang-en aria-hidden="false">TIBR</span>
+            <span class="lp-hero__name-en" data-lang-ar aria-hidden="true">TIBR</span>
+            <span class="lp-hero__name-en" data-lang-en aria-hidden="true">تِبْر</span>
+          </div>
+
+          <div class="lp-hero__rule" aria-hidden="true"></div>
+
+          <p class="lp-hero__tagline">
+            <span data-lang-ar>"الأصل قبل كل شيء"</span>
+            <span data-lang-en>"Authenticity Above All"</span>
+          </p>
+
+          <div class="lp-hero__actions">
+            <a href="/shop/perfumes" class="lp-btn lp-btn--gold">
+              <span data-lang-ar>اكتشف المجموعة</span>
+              <span data-lang-en>Explore the Collection</span>
             </a>
-            <a href="#story" class="btn btn-outline">
-              <span data-i18n="hero-cta-story">حكايتنا</span>
+            <a href="#story" class="lp-btn lp-btn--ghost">
+              <span data-lang-ar>حكايتنا</span>
+              <span data-lang-en>Our Story</span>
             </a>
           </div>
         </div>
 
-        <!-- Animated Scroll Down Indicator -->
-        <a href="#story" class="scroll-indicator" aria-label="Scroll Down">
-          <span class="scroll-text" data-i18n="hero-scroll">اسحب لأسفل</span>
-          <div class="scroll-arrow">
-            <span></span>
-            <span></span>
-          </div>
-        </a>
+        <div class="lp-hero__scroll" aria-hidden="true">
+          <div class="lp-hero__scroll-line"></div>
+          <span data-lang-ar>للأسفل</span>
+          <span data-lang-en>Scroll</span>
+        </div>
       </section>
 
-      <!-- Collections overview removed from home: products are now viewed
-           only via the nav tabs (العطور / الملابس / الأحذية). -->
-
-      <!-- BRAND STORY SECTION -->
-      <section class="story-section" id="story">
-        <div class="story-bg" id="story-bg-parallax" style="background-image: url('assets/images/story_bg.png');">
-          <div class="story-overlay"></div>
+      <!-- BRAND STORY -->
+      <section class="lp-story" id="story" aria-label="حكاية تِبْر">
+        <div class="lp-story__bg-img" aria-hidden="true">
+          <img src="assets/images/story_bg.webp" alt="" decoding="async">
+          <div class="lp-story__overlay"></div>
         </div>
 
-        <div class="story-container">
-          <div class="story-card glass-panel">
-            <span class="story-mini-title" data-i18n="story-mini-title">🌿 حكاية قارورة ونسيج 🌿</span>
-            <h2 class="story-title-ar" data-i18n="story-title">من قلب القاهرة العريقة...</h2>
-            <div class="story-divider"></div>
-            
-            <div class="story-text">
-              <p data-i18n="story-p1">
+        <div class="lp-story__inner">
+          <div class="lp-story__text">
+            <p class="lp-story__label lp-reveal">
+              <span data-lang-ar>الحكاية</span>
+              <span data-lang-en>The Story</span>
+            </p>
+            <h2 class="lp-story__heading lp-reveal">
+              <span data-lang-ar>من قلب القاهرة العريقة</span>
+              <span data-lang-en>From the Heart of Ancient Cairo</span>
+            </h2>
+            <div class="lp-story__body">
+              <p class="lp-story__p lp-reveal" data-lang-ar>
                 <strong>تِبْر</strong> — هو الذهب الخام قبل الصهر. المادة في أنقى حالاتها، قبل أن تُلمَّع أو تُزيَّف. من هذا المعنى وُلدت الفكرة: نُعيد اكتشاف الخامات المصرية الأصيلة — عطوراً ونسيجاً وجلداً — وننقلها إليك بلا وسيط ولا تكلّف.
               </p>
-              <p data-i18n="story-p2">
-                من هنا لمعت الفكرة: ليه مانجمعش ذكرياتنا دي ونعيد صياغتها بروح العصر؟ ليه مانحولش نوستالجيا الشوارع القديمة لعطور فاخرة، وتصاميم أزياء كلاسيكية معاصرة تمنحك الأناقة والثقة كل يوم؟
+              <p class="lp-story__p lp-reveal" data-lang-en>
+                <strong>Tibr</strong> — raw gold before the forge. The material in its purest state, before it's polished or falsified. From this meaning, an idea was born: to rediscover genuine Egyptian materials — perfumes, fabrics, leather — and bring them to you without intermediaries.
               </p>
-              <p class="story-highlight" data-i18n="story-p3-highlight">
+              <p class="lp-story__p lp-story__p--dialect lp-reveal" data-lang-ar>
+                ليه مانجمعش ذكرياتنا ونعيد صياغتها بروح العصر؟ ليه مانحولش نوستالجيا الشوارع القديمة لعطور فاخرة، وتصاميم كلاسيكية معاصرة تمنحك الأناقة والثقة كل يوم؟
+              </p>
+              <p class="lp-story__p lp-story__p--dialect lp-reveal" data-lang-en>
+                Why not gather our memories and reshape them with the spirit of the age? Why not transform the nostalgia of old streets into luxury fragrances and contemporary designs that give you elegance and confidence?
+              </p>
+              <blockquote class="lp-story__highlight lp-reveal" data-lang-ar>
                 "كل منتج في تِبْر مصنوع من خامات طبيعية نقية، تُختار بعناية لتدوم وتحكي قصة المكان الذي نشأت فيه."
-              </p>
+              </blockquote>
+              <blockquote class="lp-story__highlight lp-reveal" data-lang-en>
+                "Every Tibr product is made from pure natural materials, carefully chosen to last — and to tell the story of the place they came from."
+              </blockquote>
             </div>
+          </div>
+
+          <div class="lp-story__image lp-reveal" aria-hidden="true">
+            <img src="assets/images/product_oud.webp"
+                 alt="قارورة العود الملكي من تِبْر"
+                 decoding="async"
+                 loading="lazy">
           </div>
         </div>
       </section>
 
       <!-- HOW TO ORDER -->
-      <section class="order-section" id="order">
-        <div class="section-container">
-          <div class="order-heading-block">
-            <h2 class="section-title" data-i18n="order-title">كيفية اقتناء طلبك</h2>
-            <div class="section-divider"></div>
-            <p class="order-subtitle-text" data-i18n="order-subtitle">بخطوات بسيطة وسريعة</p>
-          </div>
-
-          <div class="steps-grid">
-            <div class="step-card glass-panel">
-              <div class="step-num" data-i18n="step1-num">1</div>
-              <div class="step-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                  <path d="M12 6V12L16 14M12 12H8" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <h3 data-i18n="step1-title">تصفّح واختَر منتجَك</h3>
-              <p data-i18n="step1-desc">اقرأ تفاصيل ومكونات كل منتج، واكتشف الخامات وتفاصيل المقاسات والموديل الذي يناسب شخصيتك.</p>
-            </div>
-
-            <div class="step-connector">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-
-            <div class="step-card glass-panel">
-              <div class="step-num">2</div>
-              <div class="step-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <h3 data-i18n="step2-title">تواصل معنا وتساب</h3>
-              <p data-i18n="step2-desc">اضغط على "اطلب الآن" لتفتح محادثة مباشرة معنا، وسيقوم ممثلنا بتأكيد المقاسات وتفاصيل الشحن فوراً.</p>
-            </div>
-
-            <div class="step-connector">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-
-            <div class="step-card glass-panel">
-              <div class="step-num">3</div>
-              <div class="step-icon">
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M10 17H14M2 9H22M13 5H17M5 17H5.01M19 17H19.01M3 21H21C22.1046 21 23 20.1046 23 19V5C23 3.89543 22.1046 3 21 3H3C1.89543 3 1 3.89543 1 5V19C1 20.1046 1.89543 21 3 21Z" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </div>
-              <h3 data-i18n="step3-title">استلم في باب بيتك</h3>
-              <p data-i18n="step3-desc">نوفر شحن سريع لجميع محافظات مصر. تدفع عند الاستلام بعد معاينة المنتج والتأكد من فخامته وجدية جودته.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Mood gallery removed from home per request (no product imagery on landing). -->
-
-    </div> <!-- /view-home -->
-
-    <!-- ==========================================
-         SPA VIEW: PERFUMES (Scent Experience)
-         ========================================== -->
-    <div id="view-perfumes" class="spa-view">
-      <!-- 500vh spacer — drives the 3D GSAP timeline via ScrollTrigger -->
-      <div class="scroll-container" id="scroll-container"></div>
-
-      <!-- Product catalog shown after scrolling through the 3D experience -->
-      <section class="scents-section store-section" id="perfumes-catalog">
-        <div class="store-page">
-          <header class="store-reveal shop-hero">
-            <h2 class="shop-hero__title" data-i18n="perfumes-header-title">عطور الذاكرة</h2>
-            <p class="shop-hero__subtitle" data-i18n="perfumes-store-subtitle">كل قارورة حكاية. اختَر عطرك من المجموعة الكاملة.</p>
-            <div class="shop-hero__divider"></div>
+      <section class="lp-steps" id="order" aria-label="كيفية الطلب">
+        <div class="lp-steps__inner">
+          <header class="lp-steps__header">
+            <h2 class="lp-steps__heading lp-reveal">
+              <span data-lang-ar>كيفية الطلب</span>
+              <span data-lang-en>How to Order</span>
+            </h2>
+            <p class="lp-steps__sub lp-reveal">
+              <span data-lang-ar>بخطوات بسيطة وسريعة — الدفع عند الاستلام لجميع محافظات مصر</span>
+              <span data-lang-en>Simple steps — cash on delivery across all Egyptian governorates</span>
+            </p>
           </header>
 
-          <div class="shop-toolbar store-reveal" data-store="perfumes">
-            <div class="shop-filters">
-              <div class="shop-filter-row">
-                <span class="shop-filter-label" data-i18n="shop-filter-gender">النوع</span>
-                <div class="shop-chips" role="group" aria-label="تصفية حسب النوع">
-                  <button type="button" class="shop-chip shop-chip--sm active" data-group="gender" data-value="all" data-i18n="shop-filter-all">الكل</button>
-                  <button type="button" class="shop-chip shop-chip--sm" data-group="gender" data-value="men" data-i18n="sub-men">رجالي</button>
-                  <button type="button" class="shop-chip shop-chip--sm" data-group="gender" data-value="women" data-i18n="sub-women">نسائي</button>
-                  <button type="button" class="shop-chip shop-chip--sm" data-group="gender" data-value="unisex" data-i18n="shop-gender-unisex">للجميع</button>
-                </div>
+          <div class="lp-steps__grid">
+            <!-- Step 1 -->
+            <div class="lp-step">
+              <div class="lp-step__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="M21 21l-4.35-4.35"/>
+                </svg>
               </div>
+              <h3 class="lp-step__title">
+                <span data-lang-ar>تصفّح واختَر</span>
+                <span data-lang-en>Browse &amp; Choose</span>
+              </h3>
+              <p class="lp-step__desc">
+                <span data-lang-ar>اقرأ تفاصيل ومكونات كل منتج واختر ما يناسب ذوقك.</span>
+                <span data-lang-en>Read each product's details and choose what suits your taste.</span>
+              </p>
             </div>
-            <div class="shop-toolbar__meta">
-              <span class="shop-count" aria-live="polite"></span>
-              <div class="shop-sort">
-                <label data-i18n="shop-sort-label">ترتيب</label>
-                <select class="store-sort">
-                  <option value="featured" data-i18n="shop-sort-featured">المميزة</option>
-                  <option value="price-asc" data-i18n="shop-sort-price-asc">السعر: من الأقل</option>
-                  <option value="price-desc" data-i18n="shop-sort-price-desc">السعر: من الأعلى</option>
-                  <option value="name" data-i18n="shop-sort-name">الاسم</option>
-                </select>
+
+            <!-- Arrow -->
+            <div class="lp-step-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="lp-step">
+              <div class="lp-step__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/>
+                </svg>
               </div>
+              <h3 class="lp-step__title">
+                <span data-lang-ar>تواصل معنا</span>
+                <span data-lang-en>Contact Us</span>
+              </h3>
+              <p class="lp-step__desc">
+                <span data-lang-ar>اضغط "اطلب الآن" وسيتولى فريقنا التأكيد والشحن فوراً.</span>
+                <span data-lang-en>Press "Order Now" and our team confirms and ships immediately.</span>
+              </p>
+            </div>
+
+            <!-- Arrow -->
+            <div class="lp-step-arrow" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="lp-step">
+              <div class="lp-step__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                  <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              </div>
+              <h3 class="lp-step__title">
+                <span data-lang-ar>استلم بباب بيتك</span>
+                <span data-lang-en>Delivered to Your Door</span>
+              </h3>
+              <p class="lp-step__desc">
+                <span data-lang-ar>شحن سريع لكل محافظات مصر. الدفع عند الاستلام بعد المعاينة.</span>
+                <span data-lang-en>Fast shipping to all governorates. Pay on delivery after inspection.</span>
+              </p>
             </div>
           </div>
-
-          <div class="shop-grid store-reveal" id="perfumes-store-grid"><!-- JS injected --></div>
         </div>
       </section>
-    </div>
 
+    </div><!-- /view-home -->
 
     <!-- ==========================================
-         FOOTER SECTION
+         SPA VIEW: PERFUMES (dormant — drives 3D timeline)
          ========================================== -->
-    <footer class="footer-section">
-      <div class="footer-container">
-        <!-- Logo & Tagline -->
-        <div class="footer-about">
-          <span class="footer-logo">تِبْر</span>
-          <p class="footer-tagline" data-i18n="footer-about-tagline">"الأصل قبل كل شيء."</p>
-          <div class="footer-decor">🏺 🌿 🏺</div>
+    <div id="view-perfumes" class="spa-view">
+      <!-- 500vh spacer: drives the GSAP 3D ScrollTrigger timeline (kept, do not remove) -->
+      <div class="scroll-container" id="scroll-container"></div>
+    </div>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer class="lp-footer" aria-label="تذييل الصفحة">
+      <div class="lp-footer__main">
+        <div class="lp-footer__brand">
+          <div class="lp-footer__brand-name" aria-label="تِبْر">
+            <span data-lang-ar>تِبْر</span>
+            <span data-lang-en>TIBR</span>
+          </div>
+          <p class="lp-footer__tagline">
+            <span data-lang-ar>"الأصل قبل كل شيء"</span>
+            <span data-lang-en>"Authenticity Above All"</span>
+          </p>
         </div>
 
-        <!-- Essential Info -->
-        <div class="footer-info">
-          <div class="info-group">
-            <h4 data-i18n="footer-info-headquarters">📍 المقر الرئيسي</h4>
-            <p data-i18n="footer-info-hq-desc">القاهرة، جمهورية مصر العربية</p>
-          </div>
-          <div class="info-group">
-            <h4 data-i18n="footer-info-delivery">🚚 خدمات التوصيل</h4>
-            <p data-i18n="footer-info-del-desc">شحن آمن وسريع لكل محافظات مصر</p>
-          </div>
-          <div class="info-group">
-            <h4 data-i18n="footer-info-email">✉️ البريد الإلكتروني</h4>
-            <p>hello@tibr.com</p>
-          </div>
+        <div class="lp-footer__col">
+          <h4 class="lp-footer__col-heading">
+            <span data-lang-ar>روابط</span>
+            <span data-lang-en>Links</span>
+          </h4>
+          <ul class="lp-footer__list">
+            <li>
+              <a href="#home">
+                <span data-lang-ar>الرئيسية</span>
+                <span data-lang-en>Home</span>
+              </a>
+            </li>
+            <li>
+              <a href="#story">
+                <span data-lang-ar>حكايتنا</span>
+                <span data-lang-en>Our Story</span>
+              </a>
+            </li>
+            <li>
+              <a href="/shop/perfumes">
+                <span data-lang-ar>المتجر</span>
+                <span data-lang-en>Shop</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="lp-footer__col">
+          <h4 class="lp-footer__col-heading">
+            <span data-lang-ar>تواصل معنا</span>
+            <span data-lang-en>Contact</span>
+          </h4>
+          <ul class="lp-footer__list">
+            <li>
+              <span style="color:var(--muted)">
+                <span data-lang-ar>القاهرة، جمهورية مصر العربية</span>
+                <span data-lang-en>Cairo, Egypt</span>
+              </span>
+            </li>
+            <li><a href="mailto:hello@tibr.com">hello@tibr.com</a></li>
+          </ul>
         </div>
       </div>
 
-      <!-- Copyright & Social Links -->
-      <div class="footer-bottom">
-        <div class="footer-bottom-container">
-          <p class="copyright" data-i18n="footer-copyright">تِبْر © 2026. جميع الحقوق محفوظة.</p>
-          <div class="social-links">
-            <a href="https://instagram.com" target="_blank" aria-label="Instagram">Instagram</a>
-            <a href="https://facebook.com" target="_blank" aria-label="Facebook">Facebook</a>
-            <a href="https://tiktok.com" target="_blank" aria-label="TikTok">TikTok</a>
+      <div class="lp-footer__bottom">
+        <div class="lp-footer__bottom-inner">
+          <p class="lp-footer__copy">
+            <span data-lang-ar>تِبْر © 2026. جميع الحقوق محفوظة.</span>
+            <span data-lang-en>Tibr © 2026. All rights reserved.</span>
+          </p>
+          <div class="lp-footer__social">
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">Facebook</a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer">TikTok</a>
           </div>
         </div>
       </div>
     </footer>
 
-  </div> <!-- /main-content -->
+  </div><!-- /main-content -->
 
 
   <!-- ==========================================
-       JAVASCRIPT SCRIPTS & LIBRARIES
+       SCRIPTS
        ========================================== -->
-  <!-- GSAP Library & ScrollTrigger Plugin -->
+
+  <!-- GSAP + ScrollTrigger (for hero entrance + 3D experience) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
-  <!-- Landing + 3D scripts only. Old shop / auth / cart / account / admin
-       scripts were removed with the old SPA; the new store lives under /shop,
-       /cart, /checkout, /login, /signup, /account, /admin. -->
+  <!-- Language system -->
   <script src="js/core/translations.js?v=1.4"></script>
   <script src="js/core/lang.js?v=1.2"></script>
+
+  <!-- SPA router (manages view-home / view-perfumes; kept for 3D) -->
   <script src="js/ui/router.js?v=1.4"></script>
-  <script src="js/ui/intro.js?v=1.2"></script>
   <script src="js/ui/scroll.js?v=1.3"></script>
   <script src="js/ui/gallery.js?v=1.2"></script>
 
-  <!-- Three.js (ES modules) — import map must come before the module script -->
+  <!-- Landing-specific: nav scroll state, burger, GSAP reveals -->
+  <script src="js/landing/landing.js"></script>
+
+  <!-- Three.js (ES modules) — import map must precede the module script -->
   <script type="importmap">
   {
     "imports": {
@@ -496,8 +471,6 @@
   }
   </script>
   <script type="module" src="js/ui/3d-experience.js?v=2.1"></script>
-<!-- impeccable-live-start -->
-<script src="http://localhost:8400/live.js"></script>
-<!-- impeccable-live-end -->
+
 </body>
 </html>

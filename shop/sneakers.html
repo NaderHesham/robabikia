@@ -3,12 +3,10 @@
 <head>
 <style id="lang-cloak">html{visibility:hidden}</style>
 <style>html,body{background:oklch(0.165 0.006 75)}</style>
-<script>(function(){
-var l=localStorage.getItem("tibr-lang");if(l!=="ar")l="en";
-document.documentElement.lang=l;document.documentElement.dir=l==="ar"?"rtl":"ltr";var c=document.getElementById("lang-cloak");if(c)c.parentNode.removeChild(c);
-new MutationObserver(function(m){var L=document.documentElement.lang;for(var x=0;x<m.length;x++){for(var n=0;n<m[x].addedNodes.length;n++){var e=m[x].addedNodes[n];if(e.nodeType!==1)continue;if(e.hasAttribute("data-ar-label"))e.setAttribute("aria-label",e.getAttribute("data-"+L+"-label"));if(e.hasAttribute("data-ar-alt"))e.setAttribute("alt",e.getAttribute("data-"+L+"-alt"));if(e.hasAttribute("data-ar-ph"))e.setAttribute("placeholder",e.getAttribute("data-"+L+"-ph"));if(e.tagName==="SELECT"&&e.hasAttribute("data-ar")){try{var J=JSON.parse(e.getAttribute("data-"+L));for(var j=0;j<e.options.length;j++){if(J[j]!=null)e.options[j].textContent=J[j]}}catch(_){}}if(e.tagName==="BODY"&&e.hasAttribute("data-title-ar")&&e.hasAttribute("data-title-en")){document.title=e.getAttribute("data-"+L+"-title")}if(e.querySelectorAll){var q;q=e.querySelectorAll("[data-ar-label]");for(var i=0;i<q.length;i++)q[i].setAttribute("aria-label",q[i].getAttribute("data-"+L+"-label"));q=e.querySelectorAll("[data-ar-alt]");for(var i=0;i<q.length;i++)q[i].setAttribute("alt",q[i].getAttribute("data-"+L+"-alt"));q=e.querySelectorAll("[data-ar-ph]");for(var i=0;i<q.length;i++)q[i].setAttribute("placeholder",q[i].getAttribute("data-"+L+"-ph"));q=e.querySelectorAll("select[data-ar]");for(var i=0;i<q.length;i++){try{var J=JSON.parse(q[i].getAttribute("data-"+L));for(var j=0;j<q[i].options.length;j++){if(J[j]!=null)q[i].options[j].textContent=J[j]}}catch(_){}}}}}).observe(document.documentElement,{childList:true,subtree:true});
-})();</script>
 <style>:root[lang="en"] [data-lang-ar]{display:none}:root[lang="ar"] [data-lang-en]{display:none}</style>
+<style id="attr-cloak">:root[lang="en"] [data-en-ph]::placeholder{color:transparent}</style>
+<meta name="title-en" content="Sneakers · Tibr">
+<script>(function(){var l=localStorage.getItem("tibr-lang");if(l!=="ar")l="en";var d=document.documentElement;d.lang=l;d.dir=l==="ar"?"rtl":"ltr";if(l==="en"){var m=document.querySelector('meta[name="title-en"]');if(m)document.title=m.content}var c=document.getElementById("lang-cloak");if(c)c.parentNode.removeChild(c)})();</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="أحذية تِبْر الجلدية، حرفية مصرية بروح معاصرة.">
@@ -16,11 +14,8 @@ new MutationObserver(function(m){var L=document.documentElement.lang;for(var x=0
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..600&family=Hanken+Grotesk:wght@400;500;600;700&family=Reem+Kufi:wght@400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="/css/store/tokens.css">
-  <link rel="stylesheet" href="/css/store/base.css">
-  <link rel="stylesheet" href="/css/store/chrome.css">
-  <link rel="stylesheet" href="/css/store/components.css">
-  <link rel="stylesheet" href="/css/store/catalog.css">
+  <link rel="stylesheet" href="/css/store/store.css">
+  <link rel="prefetch" href="/cart" as="document">
 </head>
 <body data-nav="sneakers" data-title-ar="الأحذية · تِبْر" data-title-en="Sneakers · Tibr">
   <a class="skip-link" href="#main"><span data-lang-ar>تخطَّ إلى المنتجات</span><span data-lang-en>Skip to products</span></a>
@@ -47,7 +42,7 @@ new MutationObserver(function(m){var L=document.documentElement.lang;for(var x=0
                 <a class="store-iconbtn store-util-extra" href="/wishlist" data-ar-label="المفضلة" data-en-label="Wishlist" aria-label="المفضلة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20.3c-.4-.3-5.9-4-8-7.6C2.2 9.8 3.2 6.2 6.3 6.2c1.8 0 3 1.1 3.7 2.2.7-1.1 1.9-2.2 3.7-2.2 3.1 0 4.1 3.6 2.3 6.5-2.1 3.6-7.6 7.3-8 7.6z" stroke-linejoin="round"/></svg></a>
                 <a class="store-iconbtn store-util-extra" href="/account" data-ar-label="حسابي" data-en-label="Account" aria-label="حسابي"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5a6.5 6.5 0 0 1 13 0" stroke-linecap="round"/></svg></a>
                 <a class="store-iconbtn" href="/cart" id="cart-btn" data-ar-label="سلة التسوق" data-en-label="Cart" aria-label="سلة التسوق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6.6 8h10.8l.7 11.4a1.1 1.1 0 0 1-1.1 1.1H7a1.1 1.1 0 0 1-1.1-1.1z" stroke-linejoin="round"/><path d="M9.2 8.5V7a2.8 2.8 0 0 1 5.6 0v1.5" stroke-linecap="round"/></svg><span class="store-cart-count" id="cart-count" aria-hidden="true">0</span></a>
-                <button class="store-lang" id="lang-switch" type="button" aria-label="Switch language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M3.8 12h16.4M12 3.8c2.2 2.3 3.4 5.2 3.4 8.2s-1.2 5.9-3.4 8.2c-2.2-2.3-3.4-5.2-3.4-8.2s1.2-5.9 3.4-8.2z"/></svg><span class="lang-text">EN</span></button>
+                <button class="store-lang" id="lang-switch" type="button" aria-label="Switch language"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M3.8 12h16.4M12 3.8c2.2 2.3 3.4 5.2 3.4 8.2s-1.2 5.9-3.4 8.2c-2.2-2.3-3.4-5.2-3.4-8.2s1.2-5.9 3.4-8.2z"/></svg><span class="lang-text"><span data-lang-ar>EN</span><span data-lang-en>العربية</span></span></button>
                 <button class="store-burger" id="burger" type="button" aria-expanded="false" aria-controls="drawer" data-ar-label="القائمة" data-en-label="Menu" aria-label="القائمة"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" stroke-linecap="round"/></svg></button>
               </div>
             </div>

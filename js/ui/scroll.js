@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1. NAVBAR SCROLL BACKGROUND & ACTIVE LINKS
   // ==========================================
   const handleScroll = () => {
+    if (!navbar) return;
     // 50px threshold for glassmorphism
     if (window.scrollY > 50) {
       navbar.classList.add("scrolled");

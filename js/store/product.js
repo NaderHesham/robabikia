@@ -25,7 +25,7 @@
     "oud-mystery": {
       category: "perfumes", ar_name: "سر العود", en_name: "Oud Mystery",
       ar_collection: "مجموعة الرجولة", en_collection: "Masculinity Collection",
-      price: 450, image: "/assets/images/product_oud.png", gender: "men",
+      price: 450, image: "/assets/images/product_oud.webp", gender: "men",
       ar_desc: "عطر جريء وساحر يمزج بين العود المعتق الفاخر والبخور التقليدي. رائحة عميقة تعكس عراقة التراث المصري.",
       en_desc: "A bold, enchanting blend of aged premium oud and traditional incense. A deep aroma rooted in Egyptian heritage.",
       s1l: NOTES, ar_s1: "العود الملكي، البخور", en_s1: "Royal Oud, Incense",
@@ -37,7 +37,7 @@
     "jasmine-memories": {
       category: "perfumes", ar_name: "ذاكرة الفل", en_name: "Jasmine Memories",
       ar_collection: "مجموعة النخبة", en_collection: "Heritage Line",
-      price: 375, image: "/assets/images/product_jasmine.png", gender: "women",
+      price: 375, image: "/assets/images/product_jasmine.webp", gender: "women",
       ar_desc: "يجسّد رائحة الياسمين الليلي على شرفات بيوت القاهرة القديمة، خليط حسّاس من الزهور البيضاء فوق قاعدة خشبية دافئة.",
       en_desc: "The scent of night jasmine on old Cairo balconies, a delicate blend of white florals over a warm wooden base.",
       s1l: NOTES, ar_s1: "الياسمين، الفل البلدي", en_s1: "Jasmine, Local Sambac",
@@ -49,7 +49,7 @@
     "rose-elegance": {
       category: "perfumes", ar_name: "وردة الأناقة", en_name: "Rose Elegance",
       ar_collection: "مجموعة النخبة", en_collection: "Elite Collection",
-      price: 350, image: "/assets/images/product_nostalgia.png", gender: "women",
+      price: 350, image: "/assets/images/product_nostalgia.webp", gender: "women",
       ar_desc: "رقّة الورد الدمشقي مع مسك أبيض ناعم. دفء حنيني يذكّر بحدائق القاهرة القديمة.",
       en_desc: "Damask rose softened by white musk. A nostalgic warmth recalling the gardens of old Cairo.",
       s1l: NOTES, ar_s1: "الورد الدمشقي، الفاو", en_s1: "Damask Rose, Fao",
